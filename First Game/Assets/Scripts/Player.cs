@@ -18,8 +18,16 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     bool IsGrounded()
     {
-        RaycastHit2D groundCheck = Physics2D.Raycast(gameObject.transform.position, Vector2.down, 1.2f);
-        return groundCheck.collider != null && groundCheck.collider.CompareTag("Ground");
+        var area = Physics2D.OverlapArea(new Vector2(transform.position.x - 0.5f, transform.position.y - 1f), new Vector2(transform.position.x + 0.5f, transform.position.y - 1.1f));
+        if (area.tag == "Ground")
+        {
+            return true;
+        }
+        else
+        {
+            print(area.tag);
+            return false;
+        }
     }
 
     private void Move()
