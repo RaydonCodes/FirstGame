@@ -4,30 +4,33 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    
+   
     Rigidbody2D rb;
+    SpriteRenderer sr;
+    double halfWidth;
+    double halfHeight;
     public float jumpPower = 16;
     public float speed = 10;
+    public LayerMask groundLayer;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();  
+        rb = gameObject.GetComponent<Rigidbody2D>();
+        SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
+        halfWidth = sr.bounds.size.x / 2;
+        halfHeight = sr.bounds.size.y / 2;
+
+
     }
 
     // Update is called once per frame
     bool IsGrounded()
     {
-        var area = Physics2D.OverlapArea(new Vector2(transform.position.x - 0.5f, transform.position.y - 1f), new Vector2(transform.position.x + 0.5f, transform.position.y - 1.1f));
-        if (area.tag == "Ground")
-        {
-            return true;
-        }
-        else
-        {
-            print(area.tag);
-            return false;
-        }
+        bool isGrounded = Physics2D.OverlapArea(new Vector2((float)(transform.position.x - halfWidth+0.1), (float)(transform.position.y - halfHeight)), new Vector2((float)(transform.position.x + halfWidth-0.1), (float)(transform.position.y - halfHeight + 0.1)), groundLayer);
+        
+        return isGrounded;
     }
 
     private void Move()
@@ -38,10 +41,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        Move();
         if (Input.GetButton("Jump") && IsGrounded())
         {
             rb.velocity = new Vector2(0, jumpPower);
         }
-        Move();
+        
     }
 }
