@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    
-   
+
+    Collider2D col;
     Rigidbody2D rb;
-    SpriteRenderer sr;
     double halfWidth;
     double halfHeight;
     public float jumpPower = 16;
@@ -18,9 +17,10 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
-        SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
-        halfWidth = sr.bounds.size.x / 2;
-        halfHeight = sr.bounds.size.y / 2;
+        col = gameObject.GetComponent<Collider2D>();
+        halfHeight = col.bounds.size.y / 2;
+        halfWidth = col.bounds.size.x / 2;
+        
 
 
     }
@@ -28,8 +28,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     bool IsGrounded()
     {
-        bool isGrounded = Physics2D.OverlapArea(new Vector2((float)(transform.position.x - halfWidth+0.1), (float)(transform.position.y - halfHeight)), new Vector2((float)(transform.position.x + halfWidth-0.1), (float)(transform.position.y - halfHeight + 0.1)), groundLayer);
-        
+        //collision on the toes, using the collision and not sticking to walls
+        bool isGrounded = Physics2D.OverlapArea(new Vector2((float)(col.bounds.center.x - halfWidth+0.001), (float)(col.bounds.center.y - halfHeight)), new Vector2((float)(col.bounds.center.x + halfWidth-0.001), (float)(col.bounds.center.y - halfHeight + 0.1)), groundLayer);
+
         return isGrounded;
     }
 
