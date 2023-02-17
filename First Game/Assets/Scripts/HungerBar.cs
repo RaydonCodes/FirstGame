@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class HungerBar : MonoBehaviour
 {
     // For this type of variable you have to: using UnityEngine.UI;
-
     public Slider slider;
 
     public void SetMaxHunger(int maxHunger)
@@ -19,5 +18,4 @@ public class HungerBar : MonoBehaviour
     {
         slider.value = hunger;
     }
-
 }

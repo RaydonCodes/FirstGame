@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
     public HungerBar hungerBar;
     
     Collider2D col;
@@ -13,7 +12,7 @@ public class Player : MonoBehaviour
     double halfWidth;
     double halfHeight;
 
-    public float hungerSpeed = 1;
+    public float hungerSpeed = 10;
     public float jumpPower = 16;
     public float speed = 10;
     public LayerMask groundLayer;
@@ -26,7 +25,7 @@ public class Player : MonoBehaviour
         halfHeight = col.bounds.size.y / 2;
         halfWidth = col.bounds.size.x / 2;
 
-        hungerBar.SetMaxHunger(10);
+        hungerBar.SetMaxHunger(100);
     }
 
     // Update is called once per frame
@@ -44,7 +43,7 @@ public class Player : MonoBehaviour
     private void Move()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 100, rb.velocity.y);
+        rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 300, rb.velocity.y);
     }
 
     void Update()
@@ -55,10 +54,19 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(0, jumpPower);
         }
 
-        hungerBar.SetHunger(hungerBar.slider.value - Time.deltaTime * hungerSpeed);
+        hungerBar.SetHunger(hungerBar.slider.value - Time.deltaTime * 10 * hungerSpeed);
 
-        //set hungerspeed
+        // Set hungerspeed
         hungerSpeed = 1 + Time.time / 10;   
-       
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Food")
+        {
+            Food food = other.GetComponent<Food>();
+            hungerBar.SetHunger(hungerBar.slider.value + food.calories);
+            Destroy(other.gameObject);
+        }
     }
 }
