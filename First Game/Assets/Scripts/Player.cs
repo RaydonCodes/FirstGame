@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
 
     public HungerBar hungerBar;
-
+    
     Collider2D col;
     Rigidbody2D rb;  
 
@@ -33,16 +33,18 @@ public class Player : MonoBehaviour
     bool IsGrounded()
     {
         //collision on the toes, using the collision and not sticking to walls
-        bool isGrounded = Physics2D.OverlapArea(new Vector2((float)(col.bounds.center.x - halfWidth+0.001), (float)(col.bounds.center.y - halfHeight)), new Vector2((float)(col.bounds.center.x + halfWidth-0.001), (float)(col.bounds.center.y - halfHeight + 0.1)), groundLayer);
+        Vector2 point1 = new Vector2((float)(col.bounds.center.x - halfWidth + 0.01), (float)(col.bounds.center.y - halfHeight));
+        Vector2 point2 = new Vector2((float)(col.bounds.center.x + halfWidth - 0.01), (float)(col.bounds.center.y - halfHeight + 0.1)); 
 
-        return isGrounded;
-        
+        bool isGrounded = Physics2D.OverlapArea(point1, point2, groundLayer);
+
+        return isGrounded;       
     }
 
     private void Move()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
+        rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 100, rb.velocity.y);
     }
 
     void Update()
@@ -59,5 +61,4 @@ public class Player : MonoBehaviour
         hungerSpeed = 1 + Time.time / 10;   
        
     }
-
 }

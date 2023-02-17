@@ -16,7 +16,7 @@ public class Food : MonoBehaviour
         {
             HungerBar hungerbar = player.hungerBar;
             hungerbar.SetHunger(hungerbar.slider.value + calories / 10);
-        }        
+        }  
     }
 
 }
