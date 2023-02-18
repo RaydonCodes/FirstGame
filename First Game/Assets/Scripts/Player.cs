@@ -11,10 +11,12 @@ public class Player : MonoBehaviour
 
     double halfWidth;
     double halfHeight;
+    bool hasJumped;
 
     public float hungerSpeed = 10;
     public float jumpPower = 16;
     public float speed = 10;
+    float timeOnAir;
     public LayerMask groundLayer;
 
     // Start is called before the first frame update
@@ -43,22 +45,36 @@ public class Player : MonoBehaviour
     private void Move()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 300, rb.velocity.y);
+        rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 50, rb.velocity.y);
     }
 
     void Update()
-    {
-        Move();
-        if (Input.GetButton("Jump") && IsGrounded())
-        {
-            rb.velocity = new Vector2(0, jumpPower);
-        }
-
+    {  
+        
         hungerBar.SetHunger(hungerBar.slider.value - Time.deltaTime * 10 * hungerSpeed);
-
         // Set hungerspeed
         hungerSpeed = 1 + Time.time / 10;   
     }
+
+
+    private void FixedUpdate()
+    {
+        timeOnAir += Time.deltaTime;
+        if (IsGrounded())
+        {
+            hasJumped = false;
+            timeOnAir = 0;
+        }
+        Move();
+        if (Input.GetButton("Jump") && timeOnAir < 0.15 && !hasJumped)
+        {
+            hasJumped = true;
+
+
+            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+        }
+    }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
