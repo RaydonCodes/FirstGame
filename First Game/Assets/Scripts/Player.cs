@@ -19,13 +19,19 @@ public class Player : MonoBehaviour
     float timeOnAir;
     public LayerMask groundLayer;
 
+
+    //raycasts
+    RaycastHit2D rightRay;
+    RaycastHit2D leftRay;
+
     // Start is called before the first frame update
     void Start()
-    {
+    {                               
         rb = gameObject.GetComponent<Rigidbody2D>();
         col = gameObject.GetComponent<Collider2D>();
         halfHeight = col.bounds.size.y / 2;
         halfWidth = col.bounds.size.x / 2;
+
 
         hungerBar.SetMaxHunger(100);
     }
@@ -45,15 +51,55 @@ public class Player : MonoBehaviour
     private void Move()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 50, rb.velocity.y);
+        rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 20, rb.velocity.y);
     }
 
     void Update()
-    {  
-        
+    {
+        rightRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2 + 0.01f, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.4f, groundLayer);
+        leftRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2 - 0.01f, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.4f, groundLayer);
+
+        if (rightRay && !leftRay)
+        {
+            bool loop = true;
+            float increment = 0;
+            while (loop)
+            {
+                increment += 0.2f;
+                RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2 + 0.01f + increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.4f, groundLayer);
+                if (tempRay.collider == null)
+                {
+                    loop = false;
+                }
+            }
+            transform.position += new Vector3(increment, 0, 0);
+        }
+        if (leftRay && !rightRay)
+        {
+            bool loop = true;
+            float increment = 0;
+            while (loop)
+            {
+                increment += 0.2f;
+                RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2 - 0.01f - increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.4f, groundLayer);
+                if (tempRay.collider == null)
+                {
+                    loop = false;
+                }
+            }
+            transform.position -= new Vector3(increment, 0, 0);
+        }
+
         hungerBar.SetHunger(hungerBar.slider.value - Time.deltaTime * 10 * hungerSpeed);
         // Set hungerspeed
-        hungerSpeed = 1 + Time.time / 10;   
+        hungerSpeed = 1 + Time.time / 10;
+
+        /*    VISUALIZATION OF rightRay and leftRay
+        
+        Debug.DrawLine(new Vector2(col.bounds.center.x - col.bounds.size.x / 2, col.bounds.center.y), new Vector2(col.bounds.center.x - col.bounds.size.x / 2, col.bounds.center.y) + new Vector2(0, col.bounds.size.y / 2 + 0.1f));
+        Debug.DrawLine(new Vector2(col.bounds.center.x + col.bounds.size.x / 2, col.bounds.center.y), new Vector2(col.bounds.center.x + col.bounds.size.x / 2, col.bounds.center.y) + new Vector2(0, col.bounds.size.y / 2 + 0.1f));
+
+        */
     }
 
 
@@ -73,6 +119,7 @@ public class Player : MonoBehaviour
 
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         }
+
     }
 
 
