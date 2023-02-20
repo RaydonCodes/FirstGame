@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
     private void Move()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 20, rb.velocity.y);
+        rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 40, rb.velocity.y);
     }
 
     void Update()
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
 
         RaycastHit2D middleRay = Physics2D.Raycast(new Vector2(col.bounds.center.x, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
 
-        if (rightRay && !middleRay && rb.velocity.y > 10)
+        if (rightRay && !middleRay && rb.velocity.y > 11.5f)
         {
             bool loop = true;
             float increment = 0;
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
             }
             transform.position -= new Vector3(increment, 0, 0);
         }
-        if (leftRay && !middleRay && rb.velocity.y > 10)
+        if (leftRay && !middleRay && rb.velocity.y > 11.5f)
         {
             print("hi");
             bool loop = true;
