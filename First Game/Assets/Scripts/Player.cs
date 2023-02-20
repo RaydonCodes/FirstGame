@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-
+        print(rb.velocity.y);
         CheckForCorner();
 
         hungerBar.SetHunger(hungerBar.slider.value - Time.deltaTime * 10 * hungerSpeed);
@@ -69,28 +69,28 @@ public class Player : MonoBehaviour
 
     void CheckForCorner()
     {
-        RaycastHit2D leftRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.1f, groundLayer);
-        RaycastHit2D rightRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.1f, groundLayer);
+        RaycastHit2D leftRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
+        RaycastHit2D rightRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
 
-        RaycastHit2D middleLeftRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 3, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.1f, groundLayer);
-        RaycastHit2D middleRightRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 3, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.1f, groundLayer);
+        RaycastHit2D middleRay = Physics2D.Raycast(new Vector2(col.bounds.center.x, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
 
-        if (rightRay && !middleLeftRay && rb.velocity.y > 0)
+        if (rightRay && !middleRay && rb.velocity.y > 10)
         {
             bool loop = true;
             float increment = 0;
             while (loop)
             {
+                print("BLACK" + rb.velocity.y);
                 increment += 0.05f;
-                RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2 - 0.01f + increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.4f, groundLayer);
+                RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2 - increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
                 if (tempRay.collider == null)
                 {
                     loop = false;
                 }
             }
-            transform.position += new Vector3(increment, 0, 0);
+            transform.position -= new Vector3(increment, 0, 0);
         }
-        if (leftRay && !middleRightRay && rb.velocity.y > 0)
+        if (leftRay && !middleRay && rb.velocity.y > 10)
         {
             print("hi");
             bool loop = true;
@@ -98,13 +98,13 @@ public class Player : MonoBehaviour
             while (loop)
             {
                 increment += 0.05f;
-                RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2 - 0.01f + increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.4f, groundLayer);
+                RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2 + increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
                 if (tempRay.collider == null)
                 {
                     loop = false;
                 }
             }
-            transform.position -= new Vector3(increment, 0, 0);
+            transform.position += new Vector3(increment, 0, 0);
         }
     }
 
