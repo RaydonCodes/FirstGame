@@ -51,7 +51,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        print(rb.velocity.y);
         CheckForCorner();
 
         hungerBar.SetHunger(hungerBar.slider.value - Time.deltaTime * 10 * hungerSpeed);
@@ -76,32 +75,28 @@ public class Player : MonoBehaviour
 
         if (rightRay && !middleRay && rb.velocity.y > 11.5f)
         {
-            bool loop = true;
             float increment = 0;
-            while (loop)
+            for(int i = 0; i < 50; i++)
             {
-                print("BLACK" + rb.velocity.y);
                 increment += 0.05f;
                 RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2 - increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
                 if (tempRay.collider == null)
                 {
-                    loop = false;
+                    break;
                 }
             }
             transform.position -= new Vector3(increment, 0, 0);
         }
         if (leftRay && !middleRay && rb.velocity.y > 11.5f)
         {
-            print("hi");
-            bool loop = true;
             float increment = 0;
-            while (loop)
+            for (int i = 0; i < 50; i++)
             {
                 increment += 0.05f;
                 RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2 + increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
                 if (tempRay.collider == null)
                 {
-                    loop = false;
+                    break;
                 }
             }
             transform.position += new Vector3(increment, 0, 0);
@@ -136,6 +131,12 @@ public class Player : MonoBehaviour
             Food food = other.GetComponent<Food>();
             hungerBar.SetHunger(hungerBar.slider.value + food.calories);
             Destroy(other.gameObject);
+        }
+
+        if (other.tag == "Trash-Can")
+        {
+            TrashCan trascan = other.gameObject.GetComponent<TrashCan>();
+            trascan.OpenTrashCan();
         }
     }
 }
