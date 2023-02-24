@@ -100,6 +100,7 @@ public class Player : MonoBehaviour
                 }
             }
             transform.position += new Vector3(increment, 0, 0);
+           
         }
     }
 
@@ -132,7 +133,6 @@ public class Player : MonoBehaviour
             hungerBar.SetHunger(hungerBar.slider.value + food.calories);
             Destroy(other.gameObject);
         }
-
         if (other.tag == "Trash-Can")
         {
             TrashCan trascan = other.gameObject.GetComponent<TrashCan>();
