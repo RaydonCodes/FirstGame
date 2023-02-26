@@ -27,7 +27,6 @@ public class Player : MonoBehaviour
         halfHeight = col.bounds.size.y / 2;
         halfWidth = col.bounds.size.x / 2;
 
-
         hungerBar.SetMaxHunger(100);
     }
 
@@ -39,7 +38,7 @@ public class Player : MonoBehaviour
         Vector2 point2 = new Vector2((float)(col.bounds.center.x + halfWidth - 0.01), (float)(col.bounds.center.y - halfHeight + 0.1)); 
 
         bool isGrounded = Physics2D.OverlapArea(point1, point2, groundLayer);
-
+        
         return isGrounded;       
     }
 
@@ -113,30 +112,33 @@ public class Player : MonoBehaviour
             hasJumped = false;
             timeOnAir = 0;
         }
+
         Move();
+
         if (Input.GetButton("Jump") && timeOnAir < 0.15 && !hasJumped)
         {
             hasJumped = true;
-
-
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         }
-
     }
 
-
     private void OnTriggerEnter2D(Collider2D other)
-    {
+    {            /*
         if (other.tag == "Food")
-        {
-            Food food = other.GetComponent<Food>();
+        { 
+            Food food = other.GetComponentInParent<Food>();
             hungerBar.SetHunger(hungerBar.slider.value + food.calories);
-            Destroy(other.gameObject);
-        }
+            Destroy(other.transform.parent.gameObject);
+        }      */
+
         if (other.tag == "Trash-Can")
         {
             TrashCan trascan = other.gameObject.GetComponent<TrashCan>();
-            trascan.OpenTrashCan();
+            if (!trascan.hasBeenOpened)
+            {
+                StartCoroutine(trascan.OpenTrashCan());
+                
+            }
         }
     }
 }
