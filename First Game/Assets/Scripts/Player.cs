@@ -123,21 +123,23 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other)
-    {            /*
+    {            
         if (other.tag == "Food")
-        { 
-            Food food = other.GetComponentInParent<Food>();
-            hungerBar.SetHunger(hungerBar.slider.value + food.calories);
-            Destroy(other.transform.parent.gameObject);
-        }      */
+        {
+            Food food = other.GetComponent<Food>();
+            if (food.canBeEaten)
+            {
+                hungerBar.SetHunger(hungerBar.slider.value + food.calories);
+                Destroy(other.gameObject);
+            }
+        }      
 
         if (other.tag == "Trash-Can")
         {
             TrashCan trascan = other.gameObject.GetComponent<TrashCan>();
             if (!trascan.hasBeenOpened)
             {
-                StartCoroutine(trascan.OpenTrashCan());
-                
+                StartCoroutine(trascan.OpenTrashCan());             
             }
         }
     }
