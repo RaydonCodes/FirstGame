@@ -20,6 +20,7 @@ public class Food : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         canBeEaten = true;
+        print(Time.time);
     }
 
 

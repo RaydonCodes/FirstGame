@@ -8,7 +8,10 @@ public class TrashCan : MonoBehaviour
     public GameObject[] foodPrefab;
     [HideInInspector] public bool hasBeenOpened;
 
-    List<GameObject> foods = new List<GameObject>();
+    public int foodAmount;
+
+    List<GameObject> foods = new List<GameObject>();    
+    
 
     private void Awake()
     {
@@ -19,8 +22,8 @@ public class TrashCan : MonoBehaviour
     {
         hasBeenOpened = true;
         animator.SetBool("IsOpened", true);
-            
-        for(int i = 0; i < 2; i++)
+        
+        for(int i = 0; i < foodAmount; i++)
         {
             foods.Add(Instantiate(foodPrefab[Random.Range(0, foodPrefab.Length - 1)], gameObject.transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity));
             Rigidbody2D rb = foods[i].AddComponent<Rigidbody2D>();
