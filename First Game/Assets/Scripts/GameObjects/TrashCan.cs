@@ -21,7 +21,11 @@ public class TrashCan : MonoBehaviour
     public IEnumerator OpenTrashCan()
     {
         hasBeenOpened = true;
+
+        // Change sprite to next animation, changing its shadows
         animator.SetBool("IsOpened", true);
+        gameObject.transform.Find("SecondAnimation").gameObject.SetActive(true);
+        gameObject.transform.Find("FirstAnimation").gameObject.SetActive(false);
         
         for(int i = 0; i < foodAmount; i++)
         {
