@@ -29,6 +29,7 @@ public class TrashCan : MonoBehaviour
         
         for(int i = 0; i < foodAmount; i++)
         {
+            // Instiantate a new burger and get its components
             foods.Add(Instantiate(foodPrefab[Random.Range(0, foodPrefab.Length - 1)], gameObject.transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity));
             Rigidbody2D rb = foods[i].AddComponent<Rigidbody2D>();
             Food food = foods[i].GetComponent<Food>();
@@ -45,8 +46,7 @@ public class TrashCan : MonoBehaviour
 
             // Wait so burgers don't overlap
             yield return new WaitForSeconds(.5f);
-        }                       
-        
+        }
     }
     
 }

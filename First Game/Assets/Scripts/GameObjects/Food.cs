@@ -21,7 +21,7 @@ public class Food : MonoBehaviour
                                                                                                                                     // but like this only targets that layer
             gameObject.transform.position = new Vector3(gameObject.transform.position.x, Mathf.Round(lookForGround.point.y), 0);
 
-        }   
+        }
     }
 
     public IEnumerator MakeFoodEdible(float time)
