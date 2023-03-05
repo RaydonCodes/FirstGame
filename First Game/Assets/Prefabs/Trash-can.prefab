@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &547609783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 547609784}
+  m_Layer: 0
+  m_Name: PopOutPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &547609784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547609783}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.08, y: 1.38, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 168550926691940171}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &168550926214748716
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,7 +104,7 @@ MonoBehaviour:
   - {x: 0.11298704, y: 0.0076723695, z: 0}
   m_ShapePathHash: -1033273217
   m_Mesh: {fileID: 0}
-  m_InstanceId: 27684
+  m_InstanceId: -1300
 --- !u!1 &168550926691940214
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,7 +120,7 @@ GameObject:
   - component: {fileID: 168550926691940169}
   m_Layer: 0
   m_Name: Trash-can
-  m_TagString: Trash-Can
+  m_TagString: Chest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,6 +139,7 @@ Transform:
   m_Children:
   - {fileID: 168550927540285194}
   - {fileID: 168550926214748707}
+  - {fileID: 547609784}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -225,6 +257,7 @@ MonoBehaviour:
   foodPrefab:
   - {fileID: 4172951919126490510, guid: 9743289bf46ea194891725feac0c1d41, type: 3}
   hasBeenOpened: 0
+  popOutPoint: {fileID: 547609783}
   foodAmount: 2
 --- !u!1 &168550927540285195
 GameObject:

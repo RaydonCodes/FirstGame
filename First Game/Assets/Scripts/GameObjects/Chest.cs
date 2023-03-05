@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrashCan : MonoBehaviour
+public class Chest : MonoBehaviour
 {
     public Animator animator;
     public GameObject[] foodPrefab;
     [HideInInspector] public bool hasBeenOpened;
+    public GameObject popOutPoint;
 
     public int foodAmount;
 
@@ -18,7 +19,7 @@ public class TrashCan : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
     }
 
-    public IEnumerator OpenTrashCan()
+    public IEnumerator OpenChest()
     {
         hasBeenOpened = true;
 
@@ -30,7 +31,7 @@ public class TrashCan : MonoBehaviour
         for(int i = 0; i < foodAmount; i++)
         {
             // Instiantate a new burger and get its components
-            foods.Add(Instantiate(foodPrefab[Random.Range(0, foodPrefab.Length - 1)], gameObject.transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity));
+            foods.Add(Instantiate(foodPrefab[Random.Range(0, foodPrefab.Length - 1)], gameObject.transform.position + popOutPoint.transform.localPosition, Quaternion.identity));
             Rigidbody2D rb = foods[i].AddComponent<Rigidbody2D>();
             Food food = foods[i].GetComponent<Food>();
 

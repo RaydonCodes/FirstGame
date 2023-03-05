@@ -6,7 +6,9 @@ TagManager:
   tags:
   - Ground
   - Food
+  - Chest
   - Trash-Can
+  - Global Light
   layers:
   - Default
   - TransparentFX

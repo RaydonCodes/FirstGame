@@ -146,13 +146,13 @@ public class Player : MonoBehaviour
             }
         }      
 
-        if (other.tag == "Trash-Can")
+        if (other.tag == "Chest")
         {
-            TrashCan trascan = other.gameObject.GetComponent<TrashCan>();
-            if (!trascan.hasBeenOpened)
+            Chest chest= other.gameObject.GetComponent<Chest>();
+            if (!chest.hasBeenOpened)
             {
                 // Open the trashcan
-                StartCoroutine(trascan.OpenTrashCan());             
+                StartCoroutine(chest.OpenChest());             
             }
         }
     }
