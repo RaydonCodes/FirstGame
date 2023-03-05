@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4172951919126490498}
   - component: {fileID: 4172951919126490499}
   m_Layer: 0
-  m_Name: burger
+  m_Name: Chicken
   m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 843057aebe5afab4a99f72afc717553f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 38ed2c97bf5768749bf246e98e392e2d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
