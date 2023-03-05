@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7081cfc661682374f88f8e042b13632e
+guid: 97ecb7c139fd9a64ab2f1632b49eb933
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -45,10 +45,10 @@ TextureImporter:
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.5, y: 0}
   spritePixelsToUnits: 16
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 1, y: 0, z: 1, w: 2}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -105,13 +105,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GoldChest_Closed
+      name: eButton_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 16
-        height: 15
+        height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -119,20 +119,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ee1bf22bf907713409c9c1748b00004c
-      internalID: 676589977
+      spriteID: 5cc74ad45494fc741b0c9209792463f1
+      internalID: 1290379414
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GoldChest_OpenFull
+      name: eButton_1
       rect:
         serializedVersion: 2
         x: 16
         y: 0
         width: 16
-        height: 15
+        height: 16
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,29 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6351b5bfc9945141aad1343d010c7a7
-      internalID: 2033104051
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GoldChest_OpenEmpty
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 15
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4f917d3872cb24941aede274e1f5f752
-      internalID: 552936336
+      spriteID: 3272ba99a2cd6b94a8f6216f199b4ef8
+      internalID: 753089974
       vertices: []
       indices: 
       edges: []
@@ -171,17 +150,15 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      GoldChest_OpenEmpty: 552936336
-      GoldChest_OpenFull: 2033104051
-      GoldChest_Closed: 676589977
-      GoldChest_1: -1421802011
+      eButton_0: 1290379414
+      eButton_1: 753089974
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

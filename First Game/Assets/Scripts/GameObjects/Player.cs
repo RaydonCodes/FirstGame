@@ -32,7 +32,6 @@ public class Player : MonoBehaviour
 
         hungerBar.SetMaxHunger(100);
     }
-
     // Gives the player an extra time to jump after the fell (Quality of life)
     void CoyoteTime()
     {
@@ -43,7 +42,6 @@ public class Player : MonoBehaviour
             timeOnAir = 0;
         }
     }
-
     // Checks if player is touching the ground
     bool IsGrounded()
     {
@@ -55,13 +53,11 @@ public class Player : MonoBehaviour
         
         return isGrounded;       
     }
-
     private void Move()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 40, rb.velocity.y);
     }
-
     void Update()
     {
         CheckForCorner();
@@ -72,19 +68,15 @@ public class Player : MonoBehaviour
         hungerSpeed = 1 + Time.time / 10;
 
     }
-
-
     void CheckForCorner()
     {
         // This is a gameplay improvement function, it checks if the player hits barely a corner when jumping, if so it teleports the player so he doesn't collide with it
 
         RaycastHit2D leftRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
         RaycastHit2D rightRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
-
         RaycastHit2D middleRay = Physics2D.Raycast(new Vector2(col.bounds.center.x, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
 
-        // Check if player its a cornet, and is also jumping (y velocity is high)
-
+        // Check if player its a corner, and is also jumping (y velocity is high)
         if (rightRay && !middleRay && rb.velocity.y > 11.5f)    // Left corner
         {
             float increment = 0;
@@ -118,8 +110,6 @@ public class Player : MonoBehaviour
             transform.position += new Vector3(increment, 0, 0);
         }
     }
-
-
     private void FixedUpdate()      // FixedUpdate is used for physics
     {
 
@@ -132,7 +122,6 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         }
     }
-
     private void OnTriggerEnter2D(Collider2D other)
     {            
         if (other.tag == "Food")
@@ -145,14 +134,13 @@ public class Player : MonoBehaviour
                 Destroy(other.gameObject);
             }
         }      
-
         if (other.tag == "Chest")
         {
-            Chest chest= other.gameObject.GetComponent<Chest>();
-            if (!chest.hasBeenOpened)
+            ContainerOpener container = other.gameObject.GetComponent<ContainerOpener>();
+            if (!container.hasBeenOpened)
             {
                 // Open the trashcan
-                StartCoroutine(chest.OpenChest());             
+                StartCoroutine(container.OpenChest());
             }
         }
     }

@@ -15,22 +15,14 @@ public class Food : MonoBehaviour
         {
             Destroy(gameObject.GetComponent<Rigidbody2D>());
 
-            // There was a bug that they went a bit through the floor, so I did this to tp to floor level
-
-            RaycastHit2D lookForGround = Physics2D.Raycast(gameObject.transform.position, Vector2.down, 1 >> groundLayer);          // I DONT KNOW WHY I HAVE TO USE "1 >> groundLayer",
-                                                                                                                                    // but like this only targets that layer
+            // There was a bug that they went a bit through the floor, so I did this to tp to floor 
+            RaycastHit2D lookForGround = Physics2D.Raycast(gameObject.transform.position, Vector2.down, 1 >> groundLayer);          // I DONT KNOW WHY I HAVE TO USE "1 >> groundLayer", but like this only targets that layer
             gameObject.transform.position = new Vector3(gameObject.transform.position.x, Mathf.Round(lookForGround.point.y), 0);
-
         }
     }
-
     public IEnumerator MakeFoodEdible(float time)
     {
         yield return new WaitForSeconds(time);
         canBeEaten = true;
-        print(Time.time);
-    }
-
-
-  
+    } 
 }

@@ -104,7 +104,7 @@ MonoBehaviour:
   - {x: 0.11298704, y: 0.0076723695, z: 0}
   m_ShapePathHash: -1033273217
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1300
+  m_InstanceId: 35368
 --- !u!1 &168550926691940214
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,8 +115,8 @@ GameObject:
   m_Component:
   - component: {fileID: 168550926691940171}
   - component: {fileID: 168550926691940212}
-  - component: {fileID: 168550926691940213}
   - component: {fileID: 168550926691940170}
+  - component: {fileID: 168550926691940213}
   - component: {fileID: 168550926691940169}
   m_Layer: 0
   m_Name: Trash-can
@@ -195,26 +195,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &168550926691940213
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168550926691940214}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5fef1eae89fa69f418d41bf4d08b23a9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
 --- !u!61 &168550926691940170
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -241,6 +221,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1, y: 2.1}
   m_EdgeRadius: 0
+--- !u!95 &168550926691940213
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168550926691940214}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5fef1eae89fa69f418d41bf4d08b23a9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &168550926691940169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,11 +254,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 168550926691940213}
-  foodPrefab:
-  - {fileID: 4172951919126490510, guid: 9743289bf46ea194891725feac0c1d41, type: 3}
+  itemPrefab: []
   hasBeenOpened: 0
   popOutPoint: {fileID: 547609783}
-  foodAmount: 2
+  itemAmount: 0
 --- !u!1 &168550927540285195
 GameObject:
   m_ObjectHideFlags: 0

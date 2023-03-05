@@ -12,13 +12,12 @@ public class StreetLight : MonoBehaviour
 
     void Start()
     {
-
         GlobalLightGameObject = GameObject.FindWithTag("Global Light");
         GlobalLight = GlobalLightGameObject.GetComponent<Light2D>();
     }
     void Update()
     {
-        if((GlobalLight.intensity > 0.35f) && (TurnedOn = true))
+        if((GlobalLight.intensity > 0.35f) && (TurnedOn == true))
         {
             TurnedOn = false;
             foreach(Transform child in transform)
@@ -27,7 +26,7 @@ public class StreetLight : MonoBehaviour
             }
             print("a");
         }
-        if((GlobalLight.intensity < 0.35f) && (TurnedOn = false))
+        if((GlobalLight.intensity < 0.35f) && (TurnedOn == false))
         {
             TurnedOn = true;
             foreach (Transform child in transform)

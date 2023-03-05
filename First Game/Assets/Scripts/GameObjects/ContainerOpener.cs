@@ -2,38 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chest : MonoBehaviour
+public class ContainerOpener : MonoBehaviour
 {
     public Animator animator;
-    public GameObject[] foodPrefab;
+    public GameObject[] itemPrefab;
     [HideInInspector] public bool hasBeenOpened;
     public GameObject popOutPoint;
 
-    public int foodAmount;
+    public int itemAmount;
 
-    List<GameObject> foods = new List<GameObject>();    
-    
+    List<GameObject> items = new List<GameObject>();    
 
     private void Awake()
     {
         animator = gameObject.GetComponent<Animator>();
     }
-
     public IEnumerator OpenChest()
     {
         hasBeenOpened = true;
 
         // Change sprite to next animation, changing its shadows
-        animator.SetBool("IsOpened", true);
+        animator.SetBool("isOpened", true);
         gameObject.transform.Find("SecondAnimation").gameObject.SetActive(true);
         gameObject.transform.Find("FirstAnimation").gameObject.SetActive(false);
         
-        for(int i = 0; i < foodAmount; i++)
+        for (int i = 0; i < itemAmount; i++)
         {
-            // Instiantate a new burger and get its components
-            foods.Add(Instantiate(foodPrefab[Random.Range(0, foodPrefab.Length - 1)], gameObject.transform.position + popOutPoint.transform.localPosition, Quaternion.identity));
-            Rigidbody2D rb = foods[i].AddComponent<Rigidbody2D>();
-            Food food = foods[i].GetComponent<Food>();
+            // ** Change food when new items are made like gold and shit ** - Raydon
+            // Instiantate a new item and get its components
+            items.Add(Instantiate(itemPrefab[Random.Range(0, itemPrefab.Length - 1)], gameObject.transform.position + popOutPoint.transform.localPosition, Quaternion.identity)); // If rarity is added we will have to change this code. - Raydon
+            Rigidbody2D rb = items[i].AddComponent<Rigidbody2D>();
+            Food food = items[i].GetComponent<Food>();
 
             // Timer so you can't eat food instantly
             food.canBeEaten = false;
@@ -48,6 +47,5 @@ public class Chest : MonoBehaviour
             // Wait so burgers don't overlap
             yield return new WaitForSeconds(.5f);
         }
-    }
-    
+    } 
 }
