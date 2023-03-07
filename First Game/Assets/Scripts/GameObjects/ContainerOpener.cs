@@ -46,7 +46,6 @@ public class ContainerOpener : MonoBehaviour
 
             // Wait so burgers don't overlap
             yield return new WaitForSeconds(.5f);
-
         }
     } 
 }

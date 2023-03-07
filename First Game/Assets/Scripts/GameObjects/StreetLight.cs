@@ -24,6 +24,7 @@ public class StreetLight : MonoBehaviour
             {
                 child.gameObject.SetActive(false);
             }
+            print("a");
         }
         if((GlobalLight.intensity < 0.35f) && (TurnedOn == false))
         {
@@ -32,6 +33,8 @@ public class StreetLight : MonoBehaviour
             {
                 child.gameObject.SetActive(true);
             }
+            print("b");
         }
+        print(TurnedOn);
     }
 }
