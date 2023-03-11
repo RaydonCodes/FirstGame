@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     {
         //collision on the toes, using the collision and not sticking to walls
         Vector2 point1 = new Vector2((float)(col.bounds.center.x - halfWidth + 0.01), (float)(col.bounds.center.y - halfHeight));
-        Vector2 point2 = new Vector2((float)(col.bounds.center.x + halfWidth - 0.01), (float)(col.bounds.center.y - halfHeight + 0.1)); 
+        Vector2 point2 = new Vector2((float)(col.bounds.center.x + halfWidth - 0.01), (float)(col.bounds.center.y - halfHeight - 0.1)); 
 
         bool isGrounded = Physics2D.OverlapArea(point1, point2, groundLayer);
         
@@ -60,7 +60,6 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        CheckForCorner();
 
         hungerBar.SetHunger(hungerBar.slider.value - Time.deltaTime * 10 * hungerSpeed);
         
@@ -75,10 +74,11 @@ public class Player : MonoBehaviour
         RaycastHit2D leftRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
         RaycastHit2D rightRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
         RaycastHit2D middleRay = Physics2D.Raycast(new Vector2(col.bounds.center.x, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
-
+        
         // Check if player its a corner, and is also jumping (y velocity is high)
         if (rightRay && !middleRay && rb.velocity.y > 11.5f)    // Left corner
         {
+            print("NIGGNAIGNAIGNEINAIGNIE");
             float increment = 0;
             for(int i = 0; i < 50; i++)
             {
@@ -95,6 +95,7 @@ public class Player : MonoBehaviour
         }
         if (leftRay && !middleRay && rb.velocity.y > 11.5f)    // Right corner
         {
+            print("NIGGNAIGNAIGNEINAIGNIE");
             float increment = 0;
             for (int i = 0; i < 50; i++)
             {
@@ -121,6 +122,7 @@ public class Player : MonoBehaviour
             hasJumped = true;
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         }
+        CheckForCorner();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {            

@@ -30,7 +30,7 @@ public class ContainerOpener : MonoBehaviour
         {
             // ** Change food when new items are made like gold and shit ** - Raydon
             // Instiantate a new item and get its components
-            items.Add(Instantiate(itemPrefab[Random.Range(0, itemPrefab.Length - 1)], gameObject.transform.position + popOutPoint.transform.localPosition, Quaternion.identity)); // If rarity is added we will have to change this code. - Raydon
+            items.Add(Instantiate(itemPrefab[Random.Range(0, itemPrefab.Length)], gameObject.transform.position + popOutPoint.transform.localPosition, Quaternion.identity)); // If rarity is added we will have to change this code. - Raydon
             Rigidbody2D rb = items[i].AddComponent<Rigidbody2D>();
             Food food = items[i].GetComponent<Food>();
 
