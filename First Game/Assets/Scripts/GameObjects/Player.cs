@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
-{
-    public HungerBar hungerBar;
-    
+{   
     Collider2D col;
     Rigidbody2D rb;  
 
@@ -13,18 +11,28 @@ public class Player : MonoBehaviour
     double halfHeight;
     bool hasJumped;
 
+    [Header("IsGrounded box collider")]
+    public Vector3 boxSize;
+    public float horizontalOffset;
+    public float verticalOffset;
+
+    [Header("Player movement magnitudes")]
     public float hungerSpeed = 10;
     public float jumpPower = 16;
     public float speed = 10;
     public float coyoteTime = 0.15f;
+
     float timeOnAir;
+    
+    [Header("Other")]
     public LayerMask groundLayer;
+    public HungerBar hungerBar;
 
     void Start()
     {                            
         // Get player components
         rb = gameObject.GetComponent<Rigidbody2D>();
-        col = gameObject.GetComponent<Collider2D>();
+        col = gameObject.GetComponent<BoxCollider2D>();
 
         // Variables used later
         halfHeight = col.bounds.size.y / 2;
@@ -45,13 +53,15 @@ public class Player : MonoBehaviour
     // Checks if player is touching the ground
     bool IsGrounded()
     {
-        //collision on the toes, using the collision and not sticking to walls
-        Vector2 point1 = new Vector2((float)(col.bounds.center.x - halfWidth + 0.01), (float)(col.bounds.center.y - halfHeight));
-        Vector2 point2 = new Vector2((float)(col.bounds.center.x + halfWidth - 0.01), (float)(col.bounds.center.y - halfHeight - 0.1)); 
+        if (Physics2D.BoxCast(transform.position + horizontalOffset * Vector3.right, boxSize, 0, -transform.up, verticalOffset, groundLayer))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 
-        bool isGrounded = Physics2D.OverlapArea(point1, point2, groundLayer);
-        
-        return isGrounded;       
     }
     private void Move()
     {
@@ -113,15 +123,13 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()      // FixedUpdate is used for physics
     {
-
-        CoyoteTime();
-        Move();
-
         if (Input.GetButton("Jump") && timeOnAir < coyoteTime && !hasJumped)
         {
             hasJumped = true;
-            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            rb.velocity = new Vector2(rb.velocity.x, jumpPower) * Time.deltaTime * 50;
         }
+        Move();
+        CoyoteTime();
         CheckForCorner();
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -145,5 +153,11 @@ public class Player : MonoBehaviour
                 StartCoroutine(container.OpenChest());
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(transform.position + horizontalOffset * Vector3.right - transform.up * verticalOffset, boxSize);  
     }
 }
