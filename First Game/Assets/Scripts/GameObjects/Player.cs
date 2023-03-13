@@ -9,7 +9,8 @@ public class Player : MonoBehaviour
 
     double halfWidth;
     double halfHeight;
-    bool hasJumped;
+    float timeOnAir;
+    Queue<KeyCode> inputBuffer;
 
     [Header("IsGrounded box collider")]
     public Vector3 boxSize;
@@ -19,10 +20,11 @@ public class Player : MonoBehaviour
     [Header("Player movement magnitudes")]
     public float hungerSpeed = 10;
     public float jumpPower = 16;
+    public float shortJumpPower = 4;
     public float speed = 10;
     public float coyoteTime = 0.15f;
 
-    float timeOnAir;
+  
     
     [Header("Other")]
     public LayerMask groundLayer;
@@ -38,6 +40,9 @@ public class Player : MonoBehaviour
         halfHeight = col.bounds.size.y / 2;
         halfWidth = col.bounds.size.x / 2;
 
+        // Input buffer for Jump function
+        inputBuffer = new Queue<KeyCode>();
+
         hungerBar.SetMaxHunger(100);
     }
     // Gives the player an extra time to jump after the fell (Quality of life)
@@ -46,7 +51,6 @@ public class Player : MonoBehaviour
         timeOnAir += Time.deltaTime;
         if (IsGrounded())
         {
-            hasJumped = false;
             timeOnAir = 0;
         }
     }
@@ -66,16 +70,56 @@ public class Player : MonoBehaviour
     private void Move()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(horizontalInput * speed * Time.deltaTime * 40, rb.velocity.y);
+        rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
+    }
+
+    private void Jump()
+    {
+        if (Input.GetButtonDown("Jump") && timeOnAir < coyoteTime && IsGrounded())
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+        }     
+        // Input Buffer (Press space before touch ground)
+        if (IsGrounded())
+        {
+            if(inputBuffer.Count > 0)
+            {
+                if(inputBuffer.Peek() == KeyCode.Space)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+                    inputBuffer.Dequeue();
+                }
+            }
+        }
+        else if (Input.GetButtonUp("Jump") && rb.velocity.y != 0)
+        {
+            RemoveActionFromBuffer();
+            if (rb.velocity.y > shortJumpPower)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, shortJumpPower);
+            }
+            else if (rb.velocity.y > shortJumpPower/2)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, shortJumpPower / 2);
+            }
+        }
+        else if (Input.GetButtonDown("Jump"))
+        {
+            inputBuffer.Enqueue(KeyCode.Space);
+        }
     }
     void Update()
     {
 
         hungerBar.SetHunger(hungerBar.slider.value - Time.deltaTime * 10 * hungerSpeed);
-        
         // Set hungerspeed
         hungerSpeed = 1 + Time.time / 10;
 
+
+        Jump();
+        Move();
+        CoyoteTime();
+        CheckForCorner();
     }
     void CheckForCorner()
     {
@@ -122,15 +166,8 @@ public class Player : MonoBehaviour
         }
     }
     private void FixedUpdate()      // FixedUpdate is used for physics
-    {
-        if (Input.GetButton("Jump") && timeOnAir < coyoteTime && !hasJumped)
-        {
-            hasJumped = true;
-            rb.velocity = new Vector2(rb.velocity.x, jumpPower) * Time.deltaTime * 50;
-        }
-        Move();
-        CoyoteTime();
-        CheckForCorner();
+    {                                
+
     }
     private void OnTriggerEnter2D(Collider2D other)
     {            
@@ -153,6 +190,15 @@ public class Player : MonoBehaviour
                 StartCoroutine(container.OpenChest());
             }
         }
+    }
+
+    void RemoveActionFromBuffer()
+    {
+        if (inputBuffer.Count > 0)
+        {
+            inputBuffer.Dequeue();
+        }
+        
     }
 
     private void OnDrawGizmos()
