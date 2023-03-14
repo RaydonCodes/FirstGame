@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     double halfWidth;
     double halfHeight;
     float timeOnAir;
+    bool hasStoppedJumping;
     Queue<KeyCode> inputBuffer;
 
     [Header("IsGrounded box collider")]
@@ -55,7 +56,7 @@ public class Player : MonoBehaviour
         }
     }
     // Checks if player is touching the ground
-    bool IsGrounded()
+    public bool IsGrounded()
     {
         if (Physics2D.BoxCast(transform.position + horizontalOffset * Vector3.right, boxSize, 0, -transform.up, verticalOffset, groundLayer))
         {
@@ -78,6 +79,7 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Jump") && timeOnAir < coyoteTime && IsGrounded())
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            hasStoppedJumping = false;
         }     
         // Input Buffer (Press space before touch ground)
         if (IsGrounded())
@@ -87,20 +89,23 @@ public class Player : MonoBehaviour
                 if(inputBuffer.Peek() == KeyCode.Space)
                 {
                     rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+                    hasStoppedJumping = false;
                     inputBuffer.Dequeue();
                 }
             }
         }
         else if (Input.GetButtonUp("Jump") && rb.velocity.y != 0)
         {
-            RemoveActionFromBuffer();
-            if (rb.velocity.y > shortJumpPower)
+            EmptyBuffer();
+            if (rb.velocity.y > shortJumpPower && !hasStoppedJumping)
             {
                 rb.velocity = new Vector2(rb.velocity.x, shortJumpPower);
+                hasStoppedJumping = true;
             }
-            else if (rb.velocity.y > shortJumpPower/2)
+            else if (rb.velocity.y > shortJumpPower/2 && !hasStoppedJumping)
             {
                 rb.velocity = new Vector2(rb.velocity.x, shortJumpPower / 2);
+                hasStoppedJumping = true;
             }
         }
         else if (Input.GetButtonDown("Jump"))
@@ -132,7 +137,6 @@ public class Player : MonoBehaviour
         // Check if player its a corner, and is also jumping (y velocity is high)
         if (rightRay && !middleRay && rb.velocity.y > 11.5f)    // Left corner
         {
-            print("NIGGNAIGNAIGNEINAIGNIE");
             float increment = 0;
             for(int i = 0; i < 50; i++)
             {
@@ -149,7 +153,6 @@ public class Player : MonoBehaviour
         }
         if (leftRay && !middleRay && rb.velocity.y > 11.5f)    // Right corner
         {
-            print("NIGGNAIGNAIGNEINAIGNIE");
             float increment = 0;
             for (int i = 0; i < 50; i++)
             {
@@ -192,7 +195,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void RemoveActionFromBuffer()
+    void EmptyBuffer()
     {
         if (inputBuffer.Count > 0)
         {
