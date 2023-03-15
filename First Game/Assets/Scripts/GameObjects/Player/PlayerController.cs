@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
-{   
+public class PlayerController : MonoBehaviour
+{
     Collider2D col;
-    Rigidbody2D rb;  
+    public Rigidbody2D rb;
 
     double halfWidth;
     double halfHeight;
     float timeOnAir;
-    bool hasStoppedJumping;
+    bool hasStoppedJumped;
+    public bool cancelCoyoteTime;
     Queue<KeyCode> inputBuffer;
 
     [Header("IsGrounded box collider")]
@@ -25,14 +26,14 @@ public class Player : MonoBehaviour
     public float speed = 10;
     public float coyoteTime = 0.15f;
 
-  
-    
+
+
     [Header("Other")]
     public LayerMask groundLayer;
     public HungerBar hungerBar;
 
     void Start()
-    {                            
+    {
         // Get player components
         rb = gameObject.GetComponent<Rigidbody2D>();
         col = gameObject.GetComponent<BoxCollider2D>();
@@ -47,19 +48,27 @@ public class Player : MonoBehaviour
         hungerBar.SetMaxHunger(100);
     }
     // Gives the player an extra time to jump after the fell (Quality of life)
-    void CoyoteTime()
+    bool CoyoteTime()
     {
-        timeOnAir += Time.deltaTime;
-        if (IsGrounded())
+        if (timeOnAir < coyoteTime && !cancelCoyoteTime)
         {
-            timeOnAir = 0;
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
     // Checks if player is touching the ground
     public bool IsGrounded()
     {
-        if (Physics2D.BoxCast(transform.position + horizontalOffset * Vector3.right, boxSize, 0, -transform.up, verticalOffset, groundLayer))
+        RaycastHit2D col = Physics2D.BoxCast(transform.position + horizontalOffset * Vector3.right, boxSize, 0, -transform.up, verticalOffset, groundLayer);
+        if (col)
         {
+            if(col.collider.tag != "Platform")
+            {
+                cancelCoyoteTime = false;
+            }
             return true;
         }
         else
@@ -76,38 +85,46 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") && timeOnAir < coyoteTime && IsGrounded())
+        // Jumping if pressed space and (player is on ground or coyote time)
+        if (Input.GetButtonDown("Jump") && (CoyoteTime() || IsGrounded()))
         {
+            print("hellou");
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
-            hasStoppedJumping = false;
-        }     
+            hasStoppedJumped = false;
+        }
         // Input Buffer (Press space before touch ground)
-        if (IsGrounded())
+        if (IsGrounded() && !cancelCoyoteTime)
         {
-            if(inputBuffer.Count > 0)
+            // Funcionality for other objects like platforms
+            timeOnAir = 0;
+
+            if (inputBuffer.Count > 0)
             {
-                if(inputBuffer.Peek() == KeyCode.Space)
-                {
+                if (inputBuffer.Peek() == KeyCode.Space)    //Idk how this works, but it does
+                {              
+                    // Jump
                     rb.velocity = new Vector2(rb.velocity.x, jumpPower);
-                    hasStoppedJumping = false;
-                    inputBuffer.Dequeue();
+                    hasStoppedJumped = false;
+                    EmptyBuffer();
                 }
             }
         }
-        else if (Input.GetButtonUp("Jump") && rb.velocity.y != 0)
+        // If not pressing space remove velocity
+        else if (!Input.GetButton("Jump") && rb.velocity.y >= 0 && !hasStoppedJumped)
+        {
+            // Empty buffer so player doesn't jump instantly when touches ground
+            EmptyBuffer();
+            // Clamp so if player is going slower than shortJumpPower it doesn't add velocity
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(Mathf.Lerp(rb.velocity.y, shortJumpPower, 0.8f), Mathf.NegativeInfinity, rb.velocity.y));
+            // Do it only once
+            hasStoppedJumped = true;
+        }
+        // Due to last if statement can only be done once, we check again (don't doubt my methods)
+        else if (Input.GetButtonUp("Jump"))
         {
             EmptyBuffer();
-            if (rb.velocity.y > shortJumpPower && !hasStoppedJumping)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, shortJumpPower);
-                hasStoppedJumping = true;
-            }
-            else if (rb.velocity.y > shortJumpPower/2 && !hasStoppedJumping)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, shortJumpPower / 2);
-                hasStoppedJumping = true;
-            }
         }
+        // If press space add to inputBuffer (if in ground is still pressing space it will jump again, BUT PLAYER CAN'T HOLD SPACE)
         else if (Input.GetButtonDown("Jump"))
         {
             inputBuffer.Enqueue(KeyCode.Space);
@@ -115,9 +132,15 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
+        timeOnAir += Time.deltaTime;
 
+        if (inputBuffer == null)
+        {
+            inputBuffer = new Queue<KeyCode>();
+        }
+
+        // Hungerbar things
         hungerBar.SetHunger(hungerBar.slider.value - Time.deltaTime * 10 * hungerSpeed);
-        // Set hungerspeed
         hungerSpeed = 1 + Time.time / 10;
 
 
@@ -133,19 +156,22 @@ public class Player : MonoBehaviour
         RaycastHit2D leftRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
         RaycastHit2D rightRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
         RaycastHit2D middleRay = Physics2D.Raycast(new Vector2(col.bounds.center.x, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
-        
+
         // Check if player its a corner, and is also jumping (y velocity is high)
         if (rightRay && !middleRay && rb.velocity.y > 11.5f)    // Left corner
         {
             float increment = 0;
-            for(int i = 0; i < 50; i++)
+            if (rightRay.collider.tag != "Platform")
             {
-                // Get how much the player has to teleport to the side, so it doesn't collide
-                increment += 0.05f;
-                RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2 - increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
-                if (tempRay.collider == null)
+                for (int i = 0; i < 50; i++)
                 {
-                    break;
+                    // Get how much the player has to teleport to the side, so it doesn't collide
+                    increment += 0.05f;
+                    RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x + col.bounds.size.x / 2 - increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
+                    if (tempRay.collider == null)
+                    {
+                        break;
+                    }
                 }
             }
             // Teleport the player
@@ -154,14 +180,17 @@ public class Player : MonoBehaviour
         if (leftRay && !middleRay && rb.velocity.y > 11.5f)    // Right corner
         {
             float increment = 0;
-            for (int i = 0; i < 50; i++)
+            if (leftRay.collider.tag != "Platform")
             {
-                // Get how much the player has to teleport to the side, so it doesn't collide
-                increment += 0.05f;
-                RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2 + increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
-                if (tempRay.collider == null)
+                for (int i = 0; i < 50; i++)
                 {
-                    break;
+                    // Get how much the player has to teleport to the side, so it doesn't collide
+                    increment += 0.05f;
+                    RaycastHit2D tempRay = Physics2D.Raycast(new Vector2(col.bounds.center.x - col.bounds.size.x / 2 + increment, col.bounds.center.y), Vector2.up, col.bounds.size.y / 2 + 0.3f, groundLayer);
+                    if (tempRay.collider == null)
+                    {
+                        break;
+                    }
                 }
             }
             // Teleport the player
@@ -169,11 +198,11 @@ public class Player : MonoBehaviour
         }
     }
     private void FixedUpdate()      // FixedUpdate is used for physics
-    {                                
+    {
 
     }
     private void OnTriggerEnter2D(Collider2D other)
-    {            
+    {
         if (other.tag == "Food")
         {
             Food food = other.GetComponent<Food>();
@@ -183,7 +212,7 @@ public class Player : MonoBehaviour
                 hungerBar.SetHunger(hungerBar.slider.value + food.calories);
                 Destroy(other.gameObject);
             }
-        }      
+        }
         if (other.tag == "Chest")
         {
             ContainerOpener container = other.gameObject.GetComponent<ContainerOpener>();
@@ -201,12 +230,12 @@ public class Player : MonoBehaviour
         {
             inputBuffer.Dequeue();
         }
-        
+
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawCube(transform.position + horizontalOffset * Vector3.right - transform.up * verticalOffset, boxSize);  
+        Gizmos.DrawCube(transform.position + horizontalOffset * Vector3.right - transform.up * verticalOffset, boxSize);
     }
 }
