@@ -182,7 +182,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -292184443
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 141402515, guid: 63df315f36932cc46aada2fa947474f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -254,10 +254,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 168550926691940213}
-  itemPrefab: []
+  itemPrefab:
+  - {fileID: 4172951919126490510, guid: e42e55a301ec5f5418fccfea0ea189bc, type: 3}
   hasBeenOpened: 0
   popOutPoint: {fileID: 547609783}
-  itemAmount: 0
+  itemAmount: 2
 --- !u!1 &168550927540285195
 GameObject:
   m_ObjectHideFlags: 0

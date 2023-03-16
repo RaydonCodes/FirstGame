@@ -307,7 +307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1551383289972705580}
   itemPrefab:
-  - {fileID: 4172951919126490510, guid: 9743289bf46ea194891725feac0c1d41, type: 3}
+  - {fileID: 4172951919126490510, guid: e42e55a301ec5f5418fccfea0ea189bc, type: 3}
   hasBeenOpened: 0
   popOutPoint: {fileID: 1551383289402348426}
   itemAmount: 2

@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Collider2D col;
-    public Rigidbody2D rb;
+    [HideInInspector] public Collider2D col;
+    [HideInInspector] public Rigidbody2D rb;
 
     double halfWidth;
     double halfHeight;
     float timeOnAir;
+    
+    // Functionality
     bool hasStoppedJumped;
-    public bool cancelCoyoteTime;
+    [HideInInspector] public bool cancelCoyoteTime;
     Queue<KeyCode> inputBuffer;
 
     [Header("IsGrounded box collider")]
@@ -20,7 +22,6 @@ public class PlayerController : MonoBehaviour
     public float verticalOffset;
 
     [Header("Player movement magnitudes")]
-    public float hungerSpeed = 10;
     public float jumpPower = 16;
     public float shortJumpPower = 4;
     public float speed = 10;
@@ -30,7 +31,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Other")]
     public LayerMask groundLayer;
-    public HungerBar hungerBar;
 
     void Start()
     {
@@ -44,8 +44,6 @@ public class PlayerController : MonoBehaviour
 
         // Input buffer for Jump function
         inputBuffer = new Queue<KeyCode>();
-
-        hungerBar.SetMaxHunger(100);
     }
     // Gives the player an extra time to jump after the fell (Quality of life)
     bool CoyoteTime()
@@ -139,11 +137,6 @@ public class PlayerController : MonoBehaviour
             inputBuffer = new Queue<KeyCode>();
         }
 
-        // Hungerbar things
-        hungerBar.SetHunger(hungerBar.slider.value - Time.deltaTime * 10 * hungerSpeed);
-        hungerSpeed = 1 + Time.time / 10;
-
-
         Jump();
         Move();
         CoyoteTime();
@@ -195,32 +188,6 @@ public class PlayerController : MonoBehaviour
             }
             // Teleport the player
             transform.position += new Vector3(increment, 0, 0);
-        }
-    }
-    private void FixedUpdate()      // FixedUpdate is used for physics
-    {
-
-    }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Food")
-        {
-            Food food = other.GetComponent<Food>();
-            if (food.canBeEaten)
-            {
-                // Add food to hunger and destroy food
-                hungerBar.SetHunger(hungerBar.slider.value + food.calories);
-                Destroy(other.gameObject);
-            }
-        }
-        if (other.tag == "Chest")
-        {
-            ContainerOpener container = other.gameObject.GetComponent<ContainerOpener>();
-            if (!container.hasBeenOpened)
-            {
-                // Open the trashcan
-                StartCoroutine(container.OpenChest());
-            }
         }
     }
 
