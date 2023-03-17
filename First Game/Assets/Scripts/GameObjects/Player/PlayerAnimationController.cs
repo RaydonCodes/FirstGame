@@ -18,23 +18,24 @@ public class PlayerAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(playerController.rb.velocity.x);
-         if(playerController.rb.velocity.x > 2)
+        if (playerController.rb.velocity.x > 2)
         {
             animator.SetBool("isRunning", true);
             spriteRenderer.flipX = false;
-            print("nigae1");
         }
-         else if(playerControll er.rb.velocity.x < -2)
+        else if (playerController.rb.velocity.x < -2)
         {
             animator.SetBool("isRunning", true);
             spriteRenderer.flipX = true;
-            print("AEAF2");
         }
-        
+        else
         {
             animator.SetBool("isRunning", false);
-            print("gerer3");
         }
+    }
+
+    public void PlayDeathAnimation()
+    {
+        animator.SetTrigger("death");
     }
 }

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1998930075}
   - component: {fileID: 1998930080}
   - component: {fileID: 3151914813336214732}
+  - component: {fileID: 6867661617615059076}
   - component: {fileID: 1998930081}
   m_Layer: 0
   m_Name: Simon
@@ -199,6 +200,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c757b660d98fa214186ff5befc635ac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6867661617615059076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250362220136028809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d970907a3ed6e844ea8a5d4fb8e5f22d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!95 &1998930081

@@ -86,7 +86,6 @@ public class PlayerController : MonoBehaviour
         // Jumping if pressed space and (player is on ground or coyote time)
         if (Input.GetButtonDown("Jump") && (CoyoteTime() || IsGrounded()))
         {
-            print("hellou");
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             hasStoppedJumped = false;
         }

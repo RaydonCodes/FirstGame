@@ -10,6 +10,7 @@ TagManager:
   - Trash-Can
   - Global Light
   - Platform
+  - Harmful
   layers:
   - Default
   - TransparentFX
