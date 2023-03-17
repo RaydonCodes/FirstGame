@@ -5,11 +5,9 @@ using UnityEngine.Rendering.Universal;
 
 public class StreetLight : MonoBehaviour
 {
-
     GameObject GlobalLightGameObject;
     Light2D GlobalLight;
-    bool TurnedOn;
-
+    bool TurnedOn = true; // If this isn't true by default then the lamps will still be on even if the Light Intensity > 1 
     void Start()
     {
         GlobalLightGameObject = GameObject.FindWithTag("Global Light");

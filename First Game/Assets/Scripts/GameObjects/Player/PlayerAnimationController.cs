@@ -14,7 +14,6 @@ public class PlayerAnimationController : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -33,7 +32,6 @@ public class PlayerAnimationController : MonoBehaviour
             animator.SetBool("isRunning", false);
         }
     }
-
     public void PlayDeathAnimation()
     {
         animator.SetTrigger("death");
