@@ -31,7 +31,6 @@ public class PlayerLife : MonoBehaviour
     void DamagePlayer(int damagePoints)
     {
         health -= damagePoints;
-        print(health);
         if (health <= 0)
         {
             Die();
@@ -40,8 +39,11 @@ public class PlayerLife : MonoBehaviour
 
     void Die()
     {
-        gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-        gameObject.GetComponent<PlayerController>().enabled = false;
+        PlayerController playerController = gameObject.GetComponent<PlayerController>();
+        RaycastHit2D dieCast = Physics2D.Raycast(gameObject.transform.position, Vector2.down, playerController.groundLayer);
+
+        gameObject.transform.position = (dieCast.point);
+        playerController.enabled = false;
         gameObject.GetComponent<PlayerAnimationController>().PlayDeathAnimation();
     }
 }
