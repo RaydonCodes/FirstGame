@@ -6,6 +6,18 @@ public class PlayerInteractions : MonoBehaviour
 {
     bool hasInteracted = false;
     bool canInteract = false;
+
+    [Header("Interact Button")]
+    public float verticalOffset;
+    GameObject InteractButton;
+    
+
+    private void Start()
+    {
+        InteractButton = GameObject.FindWithTag("Interaction Button");
+        InteractButton.SetActive(false);
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && canInteract)
@@ -20,6 +32,8 @@ public class PlayerInteractions : MonoBehaviour
         {
             canInteract = false;
             hasInteracted = false;
+
+            InteractButton.SetActive(false);
         }
     }
 
@@ -28,6 +42,9 @@ public class PlayerInteractions : MonoBehaviour
         if (other.gameObject.tag == "Chest")
         {
             canInteract = true;
+
+            InteractButton.transform.position = other.gameObject.transform.position + new Vector3(0, verticalOffset, 0);
+            InteractButton.SetActive(true);
         }
 
         if (hasInteracted && other.gameObject.tag == "Chest")

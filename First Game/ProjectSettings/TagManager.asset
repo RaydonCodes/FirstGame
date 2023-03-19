@@ -11,6 +11,7 @@ TagManager:
   - Global Light
   - Platform
   - Harmful
+  - Interaction Button
   layers:
   - Default
   - TransparentFX
