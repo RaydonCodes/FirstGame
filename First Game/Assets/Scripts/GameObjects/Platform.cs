@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-
     PlatformEffector2D effector;
     GameObject player;
 
@@ -18,12 +17,12 @@ public class Platform : MonoBehaviour
     private void Update()
     {
 
-        if ((Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) && (player.GetComponent<PlayerController>().rb.velocity.y < 0 || player.GetComponent<PlayerController>().IsGrounded()))
+        if ((Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) && player.GetComponent<PlayerController>().rb.velocity.y <= 0.01f)
         {
             effector.rotationalOffset = 180;
             player.GetComponent<PlayerController>().cancelCoyoteTime = true;
         }
-        else if (Input.GetButtonDown("Jump") && player.GetComponent<PlayerController>().cancelCoyoteTime == false)                                                    
+        if (player.GetComponent<PlayerController>().hasJumped && player.GetComponent<PlayerController>().cancelCoyoteTime == false)                                                    
         {
             effector.rotationalOffset = 0;
         }
