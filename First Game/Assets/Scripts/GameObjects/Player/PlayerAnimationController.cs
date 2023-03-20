@@ -19,7 +19,7 @@ public class PlayerAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        StartCoroutine(PlayerIsMoving());
+        StartCoroutine(IsPlayerMoving());
         if (playerController.rb.velocity.x > 2 && isMoving)
         {
             animator.SetBool("isRunning", true);
@@ -36,12 +36,11 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-    IEnumerator PlayerIsMoving()
+    IEnumerator IsPlayerMoving()
     {
-        float temporalXPos;
         float playerXPosition = gameObject.transform.position.x;
         yield return new WaitForSeconds(.1f);
-        temporalXPos = gameObject.transform.position.x;
+        float temporalXPos = gameObject.transform.position.x;
 
         if (temporalXPos - playerXPosition == 0)
         {

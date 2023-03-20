@@ -61,7 +61,6 @@ public class PlayerController : MonoBehaviour
     // Checks if player is touching the ground
     public bool IsGrounded()
     {
-        hasJumped = false;
         RaycastHit2D col = Physics2D.BoxCast(transform.position + horizontalOffset * Vector3.right, boxSize, 0, -transform.up, verticalOffset, groundLayer);
         if (col && rb.velocity.y <= 0.5f)
         {
@@ -90,11 +89,17 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+        // If press space add to inputBuffer (if in ground is still pressing space it will jump again, BUT PLAYER CAN'T HOLD SPACE)
+        else if (Input.GetButtonDown("Jump"))
+        {
+            inputBuffer.Enqueue(KeyCode.Space);
+        }
         // Input Buffer (Press space before touch ground)
         if (IsGrounded())
         {
             // Funcionality for other objects like platforms
             timeOnAir = 0;
+            hasJumped = false;
 
             if (inputBuffer.Count > 0)
             {
@@ -105,12 +110,12 @@ public class PlayerController : MonoBehaviour
             }
         }
         // If not pressing space remove velocity, going up and only do once
-        if (!Input.GetButton("Jump") && rb.velocity.y >= 0 && !hasStoppedJumping)
+        if (!Input.GetButton("Jump") && rb.velocity.y > shortJumpPower && !hasStoppedJumping)
         {
             // Empty buffer so player doesn't jump instantly when touches ground
             EmptyBuffer();
             // Clamp so if player is going slower than shortJumpPower it doesn't add velocity
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(Mathf.Lerp(rb.velocity.y, shortJumpPower, 0.8f), Mathf.NegativeInfinity, rb.velocity.y));
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Lerp(rb.velocity.y, shortJumpPower, 0.8f));
             // Do it only once
             hasStoppedJumping = true;
         }
@@ -118,11 +123,6 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetButtonUp("Jump"))
         {
             EmptyBuffer();
-        }
-        // If press space add to inputBuffer (if in ground is still pressing space it will jump again, BUT PLAYER CAN'T HOLD SPACE)
-        if (Input.GetButtonDown("Jump"))
-        {
-            inputBuffer.Enqueue(KeyCode.Space);
         }
     }
 
@@ -145,7 +145,6 @@ public class PlayerController : MonoBehaviour
 
         JumpFunctionality();
         Move();
-        CoyoteTime();
         CheckForCorner();
     }
     void CheckForCorner()
