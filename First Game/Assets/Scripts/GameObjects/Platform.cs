@@ -17,8 +17,9 @@ public class Platform : MonoBehaviour
     private void Update()
     {
 
-        if ((Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) && player.GetComponent<PlayerController>().rb.velocity.y <= 0.01f)
+        if ((Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) && player.transform.position.y > gameObject.transform.position.y && player.GetComponent<PlayerController>().rb.velocity.y <= 0)
         {
+            print(player.GetComponent<PlayerController>().rb.velocity.y);
             effector.rotationalOffset = 180;
             player.GetComponent<PlayerController>().cancelCoyoteTime = true;
         }

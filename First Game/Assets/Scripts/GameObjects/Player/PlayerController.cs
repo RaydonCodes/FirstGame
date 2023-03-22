@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
         {
             if(col.collider.tag != "Platform")
             {
-                cancelCoyoteTime = false;
+                cancelCoyoteTime = true;
             }
             return true;
         }
@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
         hasJumped = true;
         rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         hasStoppedJumping = false;
-        cancelCoyoteTime = true;
+        cancelCoyoteTime = false;
         EmptyBuffer();
     }
     void Update()
