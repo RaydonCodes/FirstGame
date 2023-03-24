@@ -128,6 +128,7 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
+        print(Time.time);
         hasJumped = true;
         rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         hasStoppedJumping = false;

@@ -4,32 +4,31 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-    PlatformEffector2D effector;
     GameObject player;
+    Collider2D col;
 
 
     private void Start()
     {
-        effector = gameObject.GetComponent<PlatformEffector2D>();
         player = GameObject.FindGameObjectWithTag("Player");
+        col = gameObject.GetComponent<Collider2D>();
     }
 
     private void Update()
     {
 
-        if ((Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) && player.transform.position.y > gameObject.transform.position.y && player.GetComponent<PlayerController>().rb.velocity.y <= 0)
+        if (player.transform.position.y < gameObject.transform.position.y - .2f)
         {
-            print(player.GetComponent<PlayerController>().rb.velocity.y);
-            effector.rotationalOffset = 180;
+            col.isTrigger = true;
+        }
+        else if (player.transform.position.y > gameObject.transform.position.y)
+        {
+            col.isTrigger = false;
+        }
+        if ((Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) && player.transform.position.y > gameObject.transform.position.y - .2f && player.GetComponent<PlayerController>().rb.velocity.y <= 0)
+        {
+            col.isTrigger = true;
             player.GetComponent<PlayerController>().cancelCoyoteTime = true;
-        }
-        if (player.GetComponent<PlayerController>().hasJumped && player.GetComponent<PlayerController>().cancelCoyoteTime == false)                                                    
-        {
-            effector.rotationalOffset = 0;
-        }
-        if ((Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow)) && player.transform.position.y > gameObject.transform.position.y)
-        {
-            effector.rotationalOffset = 0;
         }
     }
 }
