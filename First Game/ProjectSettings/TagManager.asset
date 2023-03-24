@@ -49,12 +49,12 @@ TagManager:
   - name: Background
     uniqueID: 1691860617
     locked: 0
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Interactable objects
     uniqueID: 4002782853
     locked: 0
   - name: Player
     uniqueID: 948918101
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
