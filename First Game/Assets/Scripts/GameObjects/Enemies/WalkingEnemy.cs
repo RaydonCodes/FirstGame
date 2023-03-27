@@ -7,14 +7,19 @@ public class WalkingEnemy : MonoBehaviour
     Rigidbody2D rb;
     GameObject player;
     Collider2D col;
-    
-    public float speed;
+    PlayerController playerController;
+
+    [Header("Variables")]
+    public float speed = 5;
+    public float knockBackTime = 0.3;
+    public float knockbackStrength = 1;
     int direction = 1;
     LayerMask groundLayer;
 
     float maxRightXPos = Mathf.NegativeInfinity;
     float maxLeftXPos = Mathf.Infinity;
     bool followPlayer;
+    bool playerInvulnerable;
 
     void Move()
     {
@@ -25,8 +30,9 @@ public class WalkingEnemy : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
+        playerController = player.GetComponent<PlayerController>();
         col = gameObject.GetComponent<Collider2D>();
-        groundLayer = player.GetComponent<PlayerController>().groundLayer;
+        groundLayer = playerController.groundLayer;
     }
 
     // Update is called once per frame
@@ -87,5 +93,35 @@ public class WalkingEnemy : MonoBehaviour
             followPlayer = true;
         }
         print(followPlayer);
+    }
+
+
+    IEnumerator KnockBack(int direction){
+        
+        //Temporal variables
+        float initialKnockbackStrength = knockbackStrength;
+
+        float yForce = knockbackStrength/3;
+        playerController.enabled = false;
+        rb.velocity = new Vector2(knockbackStrength * direction, yForce);
+        playerInvulnerable = true;
+
+        while(knockbackStrength > 0){
+            
+            float deltaTimeMultiplier = knockbackStrength / knockBackTime;
+
+            knockbackStrength -= Time.deltaTime * deltaTimeMultiplier;
+            yForce -= Time.deltaTime * deltaTimeMultiplier/3;
+            rb.velocity = new Vector2(knockbackStrength * direction, yForce);
+            if (knockbackStrength < 0){
+                knockbackStrength = 0;
+            }
+            yield return null;
+        }
+        playerController.enabled = true;
+        knockbackStrength = initialKnockbackStrength;
+        yield return new WaitForSeconds(1f);
+        playerInvulnerable = false;
+        
     }
 }
