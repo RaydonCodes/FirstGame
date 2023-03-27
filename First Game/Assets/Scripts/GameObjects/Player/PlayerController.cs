@@ -136,7 +136,6 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        print(rb.velocity.x);
         timeOnAir += Time.deltaTime;
 
         if (inputBuffer == null)

@@ -11,15 +11,17 @@ public class WalkingEnemy : MonoBehaviour
 
     [Header("Variables")]
     public float speed = 5;
-    public float knockBackTime = 0.3;
-    public float knockbackStrength = 1;
+    public float knockBackTime = 0.3f;
+    public float knockbackStrength = 10;
     int direction = 1;
     LayerMask groundLayer;
 
-    float maxRightXPos = Mathf.NegativeInfinity;
-    float maxLeftXPos = Mathf.Infinity;
+    float maxRightXPos = Mathf.Infinity;
+    float maxLeftXPos = Mathf.NegativeInfinity;
+    float knockbackDirection;
     bool followPlayer;
     bool playerInvulnerable;
+    bool hasCollidedWithPlayer;
 
     void Move()
     {
@@ -41,6 +43,11 @@ public class WalkingEnemy : MonoBehaviour
         SetDirection();
         Move();
         CheckForCorner();
+
+        if (hasCollidedWithPlayer && !playerInvulnerable)
+        {
+            StartCoroutine(KnockBack(knockbackDirection));
+        }
     }
 
     void SetDirection()
@@ -85,52 +92,59 @@ public class WalkingEnemy : MonoBehaviour
             }
         }
 
-        print(player.transform.position.x - maxLeftXPos);
-        print(maxRightXPos - player.transform.position.x);
-
         if (player.transform.position.x -  maxLeftXPos > 0 && maxRightXPos - player.transform.position.x > 0)
         {   
             followPlayer = true;
         }
-        print(followPlayer);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == player)
         {
-            float direction = gameObject.transform.position.x - player.transform.position.x;
-            if (direction >= 0)
+            hasCollidedWithPlayer = true;
+            knockbackDirection = player.transform.position.x - gameObject.transform.position.x;
+            if (knockbackDirection >= 0)
             {
-                direction = 1;
+                knockbackDirection = 1;
             }
             else
             {
-                direction = -1;
+                knockbackDirection = -1;
             }
-            print("balls");
-            float strength = 10;
-            rb = player.GetComponent<Rigidbody2D>();
-            rb.AddForce(Vector2.right * strength * direction, ForceMode2D.Impulse);
         }
+    }
 
-    IEnumerator KnockBack(int direction){
-        
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject == player)
+        {
+            hasCollidedWithPlayer = false;
+        }
+    }
+
+    IEnumerator KnockBack(float direction){
+
         //Temporal variables
+        Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+        
         float initialKnockbackStrength = knockbackStrength;
-
         float yForce = knockbackStrength/3;
+        float deltaTimeMultiplier = knockbackStrength / knockBackTime;
+        
+        hasCollidedWithPlayer = false;
         playerController.enabled = false;
-        rb.velocity = new Vector2(knockbackStrength * direction, yForce);
         playerInvulnerable = true;
+        
+        playerRb.velocity = new Vector2(knockbackStrength * direction, yForce);
 
-        while(knockbackStrength > 0){
-            
-            float deltaTimeMultiplier = knockbackStrength / knockBackTime;
+        float initialTime = Time.time;
+        while (knockbackStrength > 0)
+        {
 
             knockbackStrength -= Time.deltaTime * deltaTimeMultiplier;
-            yForce -= Time.deltaTime * deltaTimeMultiplier/3;
-            rb.velocity = new Vector2(knockbackStrength * direction, yForce);
+            yForce -= Time.deltaTime * deltaTimeMultiplier/1.5f;
+            playerRb.velocity = new Vector2(knockbackStrength * direction, yForce);
             if (knockbackStrength < 0){
                 knockbackStrength = 0;
             }
@@ -138,8 +152,13 @@ public class WalkingEnemy : MonoBehaviour
         }
         playerController.enabled = true;
         knockbackStrength = initialKnockbackStrength;
-        yield return new WaitForSeconds(1f);
+
+        Invoke("MakePlayerVulnerable", .8f);
+    }
+
+
+    void MakePlayerVulnerable()
+    {
         playerInvulnerable = false;
-        
     }
 }
