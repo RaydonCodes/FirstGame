@@ -88,4 +88,24 @@ public class WalkingEnemy : MonoBehaviour
         }
         print(followPlayer);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject == player)
+        {
+            float direction = gameObject.transform.position.x - player.transform.position.x;
+            if (direction >= 0)
+            {
+                direction = 1;
+            }
+            else
+            {
+                direction = -1;
+            }
+            print("balls");
+            float strength = 10;
+            rb = player.GetComponent<Rigidbody2D>();
+            rb.AddForce(Vector2.right * strength * direction, ForceMode2D.Impulse);
+        }
+    }
 }

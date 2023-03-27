@@ -128,7 +128,6 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        print(Time.time);
         hasJumped = true;
         rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         hasStoppedJumping = false;
@@ -137,6 +136,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        print(rb.velocity.x);
         timeOnAir += Time.deltaTime;
 
         if (inputBuffer == null)
