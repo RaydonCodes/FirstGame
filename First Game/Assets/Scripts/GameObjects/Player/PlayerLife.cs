@@ -7,7 +7,7 @@ public class PlayerLife : MonoBehaviour
 
     float health = 100;
     float maxHealth = 100;
-
+    [HideInInspector] public bool PlayerIsDead = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +41,7 @@ public class PlayerLife : MonoBehaviour
     {
         PlayerController playerController = gameObject.GetComponent<PlayerController>();
         RaycastHit2D dieCast = Physics2D.Raycast(gameObject.transform.position, Vector2.down, playerController.groundLayer);
-
+        PlayerIsDead = true;
         gameObject.transform.position = (dieCast.point);
         playerController.enabled = false;
         gameObject.GetComponent<PlayerAnimationController>().PlayDeathAnimation();

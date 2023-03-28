@@ -133,6 +133,7 @@ public class PlayerController : MonoBehaviour
         hasStoppedJumping = false;
         cancelCoyoteTime = false;
         EmptyBuffer();
+        
     }
     void Update()
     {
@@ -204,6 +205,7 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
 
     private void OnDrawGizmos()
     {

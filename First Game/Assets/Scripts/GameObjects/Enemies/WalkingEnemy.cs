@@ -6,12 +6,13 @@ public class WalkingEnemy : MonoBehaviour
 {
     Rigidbody2D rb;
     GameObject player;
-    Collider2D col;
+    Rigidbody2D playerRb;
     PlayerController playerController;
+    PlayerLife playerLife;
+    Collider2D col;
 
     [Header("Variables")]
     public float speed = 5;
-    public float knockBackTime = 0.3f;
     public float knockbackStrength = 10;
     int direction = 1;
     LayerMask groundLayer;
@@ -33,7 +34,10 @@ public class WalkingEnemy : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
+        playerRb = player.GetComponent<Rigidbody2D>();
+        playerLife = player.GetComponent<PlayerLife>();
         col = gameObject.GetComponent<Collider2D>();
+       
         groundLayer = playerController.groundLayer;
     }
 
@@ -126,39 +130,38 @@ public class WalkingEnemy : MonoBehaviour
     IEnumerator KnockBack(float direction){
 
         //Temporal variables
-        Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
-        
-        float initialKnockbackStrength = knockbackStrength;
+        float initialSpeed = speed;
         float yForce = knockbackStrength/3;
-        float deltaTimeMultiplier = knockbackStrength / knockBackTime;
         
         hasCollidedWithPlayer = false;
         playerController.enabled = false;
         playerInvulnerable = true;
-        
-        playerRb.velocity = new Vector2(knockbackStrength * direction, yForce);
 
-        float initialTime = Time.time;
-        while (knockbackStrength > 0)
-        {
+        playerRb.sharedMaterial.friction = 0.5f;
+        playerRb.AddForce(new Vector2(knockbackStrength * direction, knockbackStrength/1.5f) * 2, ForceMode2D.Impulse);
 
-            knockbackStrength -= Time.deltaTime * deltaTimeMultiplier;
-            yForce -= Time.deltaTime * deltaTimeMultiplier/1.5f;
-            playerRb.velocity = new Vector2(knockbackStrength * direction, yForce);
-            if (knockbackStrength < 0){
-                knockbackStrength = 0;
-            }
-            yield return null;
-        }
-        playerController.enabled = true;
-        knockbackStrength = initialKnockbackStrength;
+        yield return new WaitForSeconds(.3f);
+        StartCoroutine(TurnOnPlayerController());
 
-        Invoke("MakePlayerVulnerable", .8f);
+        yield return new WaitForSeconds(.5f);
+        playerInvulnerable = false;
+        speed = initialSpeed;
     }
 
-
-    void MakePlayerVulnerable()
+    IEnumerator TurnOnPlayerController()
     {
-        playerInvulnerable = false;
+        bool loop = true;
+        while (loop)
+        {
+            if((Input.GetAxisRaw("Horizontal") != 0 || playerRb.velocity.x == 0) && !playerLife.PlayerIsDead)
+            {
+                print("hi");
+                playerController.enabled = true;
+                playerRb.sharedMaterial.friction = 0f;
+                loop = false;
+            }   
+            yield return null;
+        }
+
     }
 }

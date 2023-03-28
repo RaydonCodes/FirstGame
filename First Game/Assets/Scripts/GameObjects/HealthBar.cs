@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HungerBar : MonoBehaviour
+public class HealthBar : MonoBehaviour
 {
     // For this type of variable you have to: using UnityEngine.UI;
     public Slider slider;
 
-    public void SetMaxHunger(int maxHunger)
+    public void SetMaxHealth(int maxHealth)
     {
-        slider.maxValue = maxHunger;
-        slider.value = maxHunger;
+        slider.maxValue = maxHealth;
+        slider.value = maxHealth;
     }
 
-    public void SetHunger(float hunger)
+    public void SetHealth(float health)
     {
-        slider.value = hunger;
+        slider.value = health;
     }
 }
