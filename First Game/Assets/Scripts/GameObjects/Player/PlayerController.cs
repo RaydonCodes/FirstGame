@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     bool hasStoppedJumping;
     public bool hasJumped;
     [HideInInspector] public bool cancelCoyoteTime;
+    [HideInInspector] public bool cancelMovement;
     Queue<KeyCode> inputBuffer;
 
     [Header("IsGrounded box collider")]
@@ -28,7 +29,9 @@ public class PlayerController : MonoBehaviour
     public float speed = 10;
     public float coyoteTime = 0.15f;
 
-
+    [Header("Combat")]
+    public gameObject Stone;
+    public float throwStrength;
       
     [Header("Other")]
     public LayerMask groundLayer;
@@ -144,9 +147,17 @@ public class PlayerController : MonoBehaviour
             inputBuffer = new Queue<KeyCode>();
         }
 
-        JumpFunctionality();
-        Move();
+        if(!cancelMovement)
+        {
+            JumpFunctionality();
+            Move();   
+        }
         CheckForCorner();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            ThrowWeapon();
+        }
     }
     void CheckForCorner()
     {
@@ -197,6 +208,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+    void ThrowWeapon()
+    {
+        Vector2 mouseDirection = Camera.main.WorldToScreenPoint(gameObject.transform.position) - Input.mousePosition;
+        mouseDirection = Vector2.Normalize(mouseDirection);
+
+        Rigidbody2D throwableWeapon = Instantiate(stone, transform.position, Quaternion.identity) as Rigidbody2D;
+        throwableWeapon.AddForce(mouseDirection * throwStrength, ForceMode2D.Impulse);
+    }
+
+
+
+
     void EmptyBuffer()
     {
         if (inputBuffer.Count > 0)
@@ -212,4 +236,5 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawCube(transform.position + horizontalOffset * Vector3.right - transform.up * verticalOffset, boxSize);
     }
+
 }

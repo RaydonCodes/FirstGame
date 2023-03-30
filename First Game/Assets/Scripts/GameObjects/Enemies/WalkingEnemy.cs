@@ -134,7 +134,7 @@ public class WalkingEnemy : MonoBehaviour
         float yForce = knockbackStrength/3;
         
         hasCollidedWithPlayer = false;
-        playerController.enabled = false;
+        playerController.cancelMovement = true;
         playerInvulnerable = true;
 
         playerRb.sharedMaterial.friction = 0.5f;
@@ -156,7 +156,7 @@ public class WalkingEnemy : MonoBehaviour
             if((Input.GetAxisRaw("Horizontal") != 0 || playerRb.velocity.x == 0) && !playerLife.PlayerIsDead)
             {
                 print("hi");
-                playerController.enabled = true;
+                playerController.cancelMovement = false;
                 playerRb.sharedMaterial.friction = 0f;
                 loop = false;
             }   
