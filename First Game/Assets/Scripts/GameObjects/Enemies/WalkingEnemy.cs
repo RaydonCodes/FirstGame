@@ -48,6 +48,8 @@ public class WalkingEnemy : MonoBehaviour
         Move();
         CheckForCorner();
 
+        print(playerRb.sharedMaterial.friction);
+
         if (hasCollidedWithPlayer && !playerInvulnerable)
         {
             StartCoroutine(KnockBack(knockbackDirection));
@@ -131,13 +133,14 @@ public class WalkingEnemy : MonoBehaviour
 
         //Temporal variables
         float initialSpeed = speed;
-        float yForce = knockbackStrength/3;
-        
+        speed = speed / 3;
+
         hasCollidedWithPlayer = false;
         playerController.cancelMovement = true;
         playerInvulnerable = true;
 
         playerRb.sharedMaterial.friction = 0.5f;
+        playerRb.velocity = Vector2.zero;
         playerRb.AddForce(new Vector2(knockbackStrength * direction, knockbackStrength/1.5f) * 2, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(.3f);
@@ -155,7 +158,6 @@ public class WalkingEnemy : MonoBehaviour
         {
             if((Input.GetAxisRaw("Horizontal") != 0 || playerRb.velocity.x == 0) && !playerLife.PlayerIsDead)
             {
-                print("hi");
                 playerController.cancelMovement = false;
                 playerRb.sharedMaterial.friction = 0f;
                 loop = false;

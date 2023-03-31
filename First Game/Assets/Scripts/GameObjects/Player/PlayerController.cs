@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     
     // Functionality
     bool hasStoppedJumping;
-    public bool hasJumped;
+    [HideInInspector] public bool hasJumped;
     [HideInInspector] public bool cancelCoyoteTime;
     [HideInInspector] public bool cancelMovement;
     Queue<KeyCode> inputBuffer;
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     public float coyoteTime = 0.15f;
 
     [Header("Combat")]
-    public gameObject Stone;
+    public GameObject stone;
     public float throwStrength;
       
     [Header("Other")]
@@ -212,10 +212,11 @@ public class PlayerController : MonoBehaviour
     void ThrowWeapon()
     {
         Vector2 mouseDirection = Camera.main.WorldToScreenPoint(gameObject.transform.position) - Input.mousePosition;
-        mouseDirection = Vector2.Normalize(mouseDirection);
+        mouseDirection = mouseDirection.normalized;
 
-        Rigidbody2D throwableWeapon = Instantiate(stone, transform.position, Quaternion.identity) as Rigidbody2D;
-        throwableWeapon.AddForce(mouseDirection * throwStrength, ForceMode2D.Impulse);
+        GameObject throwableWeapon = Instantiate(stone, transform.position, Quaternion.identity);
+        Rigidbody2D throwableWeaponRb = throwableWeapon.GetComponent<Rigidbody2D>();
+        throwableWeaponRb.AddForce(mouseDirection * throwStrength, ForceMode2D.Impulse);
     }
 
 
