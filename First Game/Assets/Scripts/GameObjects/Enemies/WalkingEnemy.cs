@@ -11,6 +11,7 @@ public class WalkingEnemy : MonoBehaviour
     PlayerLife playerLife;
     Collider2D col;
 
+
     [Header("Variables")]
     public float speed = 5;
     public float knockbackStrength = 10;
@@ -36,7 +37,7 @@ public class WalkingEnemy : MonoBehaviour
         playerController = player.GetComponent<PlayerController>();
         playerRb = player.GetComponent<Rigidbody2D>();
         playerLife = player.GetComponent<PlayerLife>();
-        col = gameObject.GetComponent<Collider2D>();
+        col = gameObject.GetComponent<BoxCollider2D>();
        
         groundLayer = playerController.groundLayer;
     }
@@ -48,11 +49,9 @@ public class WalkingEnemy : MonoBehaviour
         Move();
         CheckForCorner();
 
-        print(playerRb.sharedMaterial.friction);
-
         if (hasCollidedWithPlayer && !playerInvulnerable)
         {
-            StartCoroutine(KnockBack(knockbackDirection));
+            StartCoroutine(playerController.KnockBack(knockbackDirection, knockbackStrength));
         }
     }
 
@@ -127,43 +126,5 @@ public class WalkingEnemy : MonoBehaviour
         {
             hasCollidedWithPlayer = false;
         }
-    }
-
-    IEnumerator KnockBack(float direction){
-
-        //Temporal variables
-        float initialSpeed = speed;
-        speed = speed / 3;
-
-        hasCollidedWithPlayer = false;
-        playerController.cancelMovement = true;
-        playerInvulnerable = true;
-
-        playerRb.sharedMaterial.friction = 0.5f;
-        playerRb.velocity = Vector2.zero;
-        playerRb.AddForce(new Vector2(knockbackStrength * direction, knockbackStrength/1.5f) * 2, ForceMode2D.Impulse);
-
-        yield return new WaitForSeconds(.3f);
-        StartCoroutine(TurnOnPlayerController());
-
-        yield return new WaitForSeconds(.5f);
-        playerInvulnerable = false;
-        speed = initialSpeed;
-    }
-
-    IEnumerator TurnOnPlayerController()
-    {
-        bool loop = true;
-        while (loop)
-        {
-            if((Input.GetAxisRaw("Horizontal") != 0 || playerRb.velocity.x == 0) && !playerLife.PlayerIsDead)
-            {
-                playerController.cancelMovement = false;
-                playerRb.sharedMaterial.friction = 0f;
-                loop = false;
-            }   
-            yield return null;
-        }
-
-    }
+    }  
 }

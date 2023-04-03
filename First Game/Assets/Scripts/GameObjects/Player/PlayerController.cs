@@ -10,9 +10,12 @@ public class PlayerController : MonoBehaviour
     double halfWidth;
     double halfHeight;
     float timeOnAir;
-    
+
+    PlayerLife playerLife;
+
     // Functionality
     bool hasStoppedJumping;
+    bool playerInvulnerable;
     [HideInInspector] public bool hasJumped;
     [HideInInspector] public bool cancelCoyoteTime;
     [HideInInspector] public bool cancelMovement;
@@ -41,6 +44,7 @@ public class PlayerController : MonoBehaviour
         // Get player components
         rb = gameObject.GetComponent<Rigidbody2D>();
         col = gameObject.GetComponent<BoxCollider2D>();
+        playerLife = gameObject.GetComponent<PlayerLife>();
 
         // Variables used later
         halfHeight = col.bounds.size.y / 2;
@@ -209,12 +213,53 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    public IEnumerator KnockBack(float direction, float knockbackStrength)
+    {
+        if (!playerInvulnerable)
+        {
+        //Temporal variables
+
+        cancelMovement = true;
+        playerInvulnerable = true;
+
+        rb.sharedMaterial.friction = 0.5f;
+        rb.sharedMaterial = rb.sharedMaterial;
+        rb.velocity = Vector2.zero;
+        rb.AddForce(new Vector2(knockbackStrength * direction, knockbackStrength / 1.5f) * 2, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(.3f);
+        StartCoroutine(TurnOnPlayerController());
+        
+        yield return new WaitForSeconds(1f);
+        playerInvulnerable = false;
+
+        }
+    }
+
+    IEnumerator TurnOnPlayerController()
+    {
+        bool loop = true;
+        while (loop)
+        {
+            if ((Input.GetAxisRaw("Horizontal") != 0 || rb.velocity.x == 0) && !playerLife.PlayerIsDead)
+            {
+                cancelMovement = false;
+                rb.sharedMaterial.friction = 0;
+                rb.sharedMaterial = rb.sharedMaterial;
+                loop = false;
+            }
+            yield return null;
+        }
+
+    }
+
     void ThrowWeapon()
     {
-        Vector2 mouseDirection = Camera.main.WorldToScreenPoint(gameObject.transform.position) - Input.mousePosition;
+        Vector2 mouseDirection = Input.mousePosition - Camera.main.WorldToScreenPoint(gameObject.transform.position);
         mouseDirection = mouseDirection.normalized;
+        print(mouseDirection);
 
-        GameObject throwableWeapon = Instantiate(stone, transform.position, Quaternion.identity);
+        GameObject throwableWeapon = Instantiate(stone, transform.position + Vector3.up * gameObject.transform.localScale.y - Vector3.up * 0.10f, Quaternion.identity);
         Rigidbody2D throwableWeaponRb = throwableWeapon.GetComponent<Rigidbody2D>();
         throwableWeaponRb.AddForce(mouseDirection * throwStrength, ForceMode2D.Impulse);
     }
