@@ -31,10 +31,6 @@ public class PlayerController : MonoBehaviour
     public float shortJumpPower = 4;
     public float speed = 10;
     public float coyoteTime = 0.15f;
-
-    [Header("Combat")]
-    public GameObject stone;
-    public float throwStrength;
       
     [Header("Other")]
     public LayerMask groundLayer;
@@ -158,10 +154,6 @@ public class PlayerController : MonoBehaviour
         }
         CheckForCorner();
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            ThrowWeapon();
-        }
     }
     void CheckForCorner()
     {
@@ -252,20 +244,6 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
-    void ThrowWeapon()
-    {
-        Vector2 mouseDirection = Input.mousePosition - Camera.main.WorldToScreenPoint(gameObject.transform.position);
-        mouseDirection = mouseDirection.normalized;
-        print(mouseDirection);
-
-        GameObject throwableWeapon = Instantiate(stone, transform.position + Vector3.up * gameObject.transform.localScale.y - Vector3.up * 0.10f, Quaternion.identity);
-        Rigidbody2D throwableWeaponRb = throwableWeapon.GetComponent<Rigidbody2D>();
-        throwableWeaponRb.AddForce(mouseDirection * throwStrength, ForceMode2D.Impulse);
-    }
-
-
-
 
     void EmptyBuffer()
     {
