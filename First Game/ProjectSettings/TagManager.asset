@@ -12,6 +12,7 @@ TagManager:
   - Platform
   - Harmful
   - Interaction Button
+  - Weapon
   layers:
   - Default
   - TransparentFX
@@ -19,9 +20,9 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Weapon
+  - Player
+  - Enemy
   - 
   - 
   - 

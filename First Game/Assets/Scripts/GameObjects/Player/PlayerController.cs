@@ -7,8 +7,6 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Collider2D col;
     [HideInInspector] public Rigidbody2D rb;
 
-    double halfWidth;
-    double halfHeight;
     float timeOnAir;
 
     PlayerLife playerLife;
@@ -42,12 +40,12 @@ public class PlayerController : MonoBehaviour
         col = gameObject.GetComponent<BoxCollider2D>();
         playerLife = gameObject.GetComponent<PlayerLife>();
 
-        // Variables used later
-        halfHeight = col.bounds.size.y / 2;
-        halfWidth = col.bounds.size.x / 2;
-
         // Input buffer for Jump function
         inputBuffer = new Queue<KeyCode>();
+
+        Physics2D.IgnoreLayerCollision(6, 7);
+        Physics2D.IgnoreLayerCollision(6, 8);
+        Physics2D.IgnoreLayerCollision(6, 6);
     }
     // Gives the player an extra time to jump after the fell (Quality of life)
     bool CoyoteTime()
@@ -205,7 +203,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public IEnumerator KnockBack(float direction, float knockbackStrength)
+    public IEnumerator KnockBackPlayer(float direction, float knockbackStrength)
     {
         if (!playerInvulnerable)
         {

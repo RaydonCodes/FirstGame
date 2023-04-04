@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2103089268
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2103089269}
+  m_Layer: 7
+  m_Name: PointToFollowCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2103089269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103089268}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.82, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3250362220136028820}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3250362220136028809
 GameObject:
   m_ObjectHideFlags: 0
@@ -18,7 +49,7 @@ GameObject:
   - component: {fileID: 3151914813336214732}
   - component: {fileID: 6867661617615059076}
   - component: {fileID: 1998930081}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Simon
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -36,7 +67,8 @@ Transform:
   m_LocalPosition: {x: 2.79, y: 0.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 2103089269}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -79,7 +111,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 948918101
-  m_SortingLayer: 2
+  m_SortingLayer: -1
   m_SortingOrder: 2
   m_Sprite: {fileID: 600299005, guid: 6ab5f715e838f924ba943348eba9838f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -153,7 +185,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   col: {fileID: 0}
   rb: {fileID: 0}
+  hasJumped: 0
   cancelCoyoteTime: 0
+  cancelMovement: 0
   boxSize: {x: 0.9, y: 0.11, z: 0}
   horizontalOffset: -0.03
   verticalOffset: 0
@@ -176,8 +210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f90cd8b1eaafaed439c39e73b998c26d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hungerSpeed: 10
-  hungerBar: {fileID: 0}
+  Strength: 5
+  healthBar: {fileID: 0}
+  stone: {fileID: 4651232107620855956, guid: 1961dc49b4562f641afad16cc0cf5910, type: 3}
+  throwStrength: 8
 --- !u!114 &1998930080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f60c4d38c1d264e869418bc2bfcb0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  verticalOffset: 2
 --- !u!114 &3151914813336214732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d970907a3ed6e844ea8a5d4fb8e5f22d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerIsDead: 0
+  healthBar: {fileID: 0}
 --- !u!95 &1998930081
 Animator:
   serializedVersion: 5

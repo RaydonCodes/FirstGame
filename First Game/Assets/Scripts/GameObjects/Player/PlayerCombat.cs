@@ -6,6 +6,7 @@ public class PlayerCombat : MonoBehaviour
 {
 
     PlayerLife pLife;
+    Rigidbody2D rb;
 
     [Header("Combat")]
     public float Strength = 5;
@@ -17,6 +18,7 @@ public class PlayerCombat : MonoBehaviour
     void Start()
     {
         pLife = gameObject.GetComponent<PlayerLife>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
     }
     // Update is called once per frame
     void Update()
@@ -32,7 +34,6 @@ public class PlayerCombat : MonoBehaviour
     {
         Vector2 mouseDirection = Input.mousePosition - Camera.main.WorldToScreenPoint(gameObject.transform.position);
         mouseDirection = mouseDirection.normalized;
-        print(mouseDirection);
 
         GameObject throwableWeapon = Instantiate(stone, transform.position + Vector3.up * gameObject.transform.localScale.y - Vector3.up * 0.10f, Quaternion.identity);
         Rigidbody2D throwableWeaponRb = throwableWeapon.GetComponent<Rigidbody2D>();

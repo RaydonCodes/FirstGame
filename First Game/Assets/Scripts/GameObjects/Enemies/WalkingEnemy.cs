@@ -2,25 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WalkingEnemy : MonoBehaviour
+public class WalkingEnemy : Enemy
 {
-    Rigidbody2D rb;
-    GameObject player;
-    Rigidbody2D playerRb;
-    PlayerController playerController;
-    PlayerLife playerLife;
-    Collider2D col;
-
-
-    [Header("Variables")]
-    public float speed = 5;
-    public float knockbackStrength = 10;
-    int direction = 1;
-    LayerMask groundLayer;
 
     float maxRightXPos = Mathf.Infinity;
     float maxLeftXPos = Mathf.NegativeInfinity;
-    float knockbackDirection;
     bool followPlayer;
     bool playerInvulnerable;
     bool hasCollidedWithPlayer;
@@ -30,28 +16,20 @@ public class WalkingEnemy : MonoBehaviour
         rb.velocity = new Vector2(direction * speed, rb.velocity.y);
     }
 
-    void Awake()
-    {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerController = player.GetComponent<PlayerController>();
-        playerRb = player.GetComponent<Rigidbody2D>();
-        playerLife = player.GetComponent<PlayerLife>();
-        col = gameObject.GetComponent<BoxCollider2D>();
-       
-        groundLayer = playerController.groundLayer;
-    }
-
+    
     // Update is called once per frame
     void Update()
     {
         SetDirection();
-        Move();
+        if (!cancelMovement)
+        {
+            Move();
+        }
         CheckForCorner();
 
         if (hasCollidedWithPlayer && !playerInvulnerable)
         {
-            StartCoroutine(playerController.KnockBack(knockbackDirection, knockbackStrength));
+            StartCoroutine(playerController.KnockBackPlayer(knockbackDirection, knockbackStrength));
         }
     }
 
@@ -71,7 +49,7 @@ public class WalkingEnemy : MonoBehaviour
         }
     }
 
-
+    //Not falling in void
     void CheckForCorner()
     {
 
@@ -103,6 +81,35 @@ public class WalkingEnemy : MonoBehaviour
         }
     }
 
+    void DamageEnemy(float damage)
+    {
+        hp -= damage;
+        if (hp <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+    public IEnumerator KnockBackEnemy(float enemyKnockbackDirection, float knockbackStrength)
+    {
+        cancelMovement = true;
+
+        rb.sharedMaterial.friction = 0.7f;
+        rb.sharedMaterial = rb.sharedMaterial;
+        rb.velocity = Vector2.zero;
+        rb.AddForce(new Vector2(knockbackStrength * enemyKnockbackDirection, knockbackStrength / 1.5f) * 2, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(.2f);
+        while(rb.velocity.x >= 0.05f)
+        {
+            yield return null;
+        }
+        cancelMovement = false;
+        rb.sharedMaterial.friction = 0;
+        rb.sharedMaterial = rb.sharedMaterial;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == player)
@@ -116,6 +123,30 @@ public class WalkingEnemy : MonoBehaviour
             else
             {
                 knockbackDirection = -1;
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Weapon")
+        {
+            Weapon weapon = collision.gameObject.GetComponentInParent<Weapon>();
+            DamageEnemy(weapon.damage);
+            Destroy(collision.gameObject.transform.parent.gameObject);
+            if (hp > 0)
+            {
+                float enemyKnockbackDirection = gameObject.transform.position.x - player.transform.position.x;
+                if (enemyKnockbackDirection >= 0)
+                {
+                    enemyKnockbackDirection = 1;
+                }
+                else
+                {
+                    enemyKnockbackDirection = -1;
+                }
+
+                StartCoroutine(KnockBackEnemy(enemyKnockbackDirection, weapon.knockbackStrength));
             }
         }
     }
