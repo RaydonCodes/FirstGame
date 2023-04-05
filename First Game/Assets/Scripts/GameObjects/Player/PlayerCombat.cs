@@ -13,6 +13,7 @@ public class PlayerCombat : MonoBehaviour
     public HealthBar healthBar;
     public GameObject stone;
     public float throwStrength;
+    public float throwRotationStrength;
 
     // Start is called before the first frame update
     void Start()
@@ -34,9 +35,20 @@ public class PlayerCombat : MonoBehaviour
     {
         Vector2 mouseDirection = Input.mousePosition - Camera.main.WorldToScreenPoint(gameObject.transform.position);
         mouseDirection = mouseDirection.normalized;
+        float rotateDir;
+        if(mouseDirection.x >= 0)
+        {
+            rotateDir = -1;
+        }
+        else
+        {
+            rotateDir = 1;
+        }
 
-        GameObject throwableWeapon = Instantiate(stone, transform.position + Vector3.up * gameObject.transform.localScale.y - Vector3.up * 0.10f, Quaternion.identity);
+        print(mouseDirection);
+        GameObject throwableWeapon = Instantiate(stone, transform.position + Vector3.up * 2, Quaternion.identity);
         Rigidbody2D throwableWeaponRb = throwableWeapon.GetComponent<Rigidbody2D>();
-        throwableWeaponRb.AddForce(mouseDirection * throwStrength, ForceMode2D.Impulse);
+        throwableWeaponRb.AddForce(mouseDirection * throwStrength + Vector2.up * 2, ForceMode2D.Impulse);
+        throwableWeaponRb.AddTorque(rotateDir * throwRotationStrength);
     }
 }
