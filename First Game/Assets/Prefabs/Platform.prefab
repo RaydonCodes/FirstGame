@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5960687928172437258}
   - component: {fileID: 5960687928172437259}
   - component: {fileID: 5960687928172437256}
-  - component: {fileID: 5960687928172437255}
   m_Layer: 3
   m_Name: Platform
   m_TagString: Platform
@@ -125,22 +124,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d5b477fa4ceb942a49971eb0b496b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!251 &5960687928172437255
-PlatformEffector2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5960687928172437260}
-  m_Enabled: 1
-  m_UseColliderMask: 1
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RotationalOffset: 0
-  m_UseOneWay: 1
-  m_UseOneWayGrouping: 0
-  m_SurfaceArc: 0.1
-  m_UseSideFriction: 0
-  m_UseSideBounce: 0
-  m_SideArc: 1

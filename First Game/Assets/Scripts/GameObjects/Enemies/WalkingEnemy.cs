@@ -8,8 +8,11 @@ public class WalkingEnemy : Enemy
     float maxRightXPos = Mathf.Infinity;
     float maxLeftXPos = Mathf.NegativeInfinity;
     bool followPlayer;
-    bool playerInvulnerable;
     bool hasCollidedWithPlayer;
+
+    [Header("IsGrounded")]
+    public Vector3 boxSize;
+    public float yOffset;
 
     void Move()
     {
@@ -27,8 +30,9 @@ public class WalkingEnemy : Enemy
         }
         CheckForCorner();
 
-        if (hasCollidedWithPlayer && !playerInvulnerable)
+        if (hasCollidedWithPlayer)
         {
+            print("daddy");
             StartCoroutine(playerController.KnockBackPlayer(knockbackDirection, knockbackStrength));
         }
     }
@@ -81,7 +85,19 @@ public class WalkingEnemy : Enemy
         }
     }
 
-    void DamageEnemy(float damage)
+    bool IsGrounded()
+    {
+        RaycastHit2D col = Physics2D.BoxCast(transform.position + Vector3.up * yOffset, boxSize, 0, -transform.up, 0, groundLayer);
+        if (col)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+        void DamageEnemy(float damage)
     {
         hp -= damage;
         if (hp <= 0)
@@ -89,6 +105,7 @@ public class WalkingEnemy : Enemy
             Destroy(gameObject);
         }
     }
+
 
 
     public IEnumerator KnockBackEnemy(float enemyKnockbackDirection, float knockbackStrength)
@@ -101,10 +118,16 @@ public class WalkingEnemy : Enemy
         rb.AddForce(new Vector2(knockbackStrength * enemyKnockbackDirection, knockbackStrength / 1.5f) * 2, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(.2f);
-        while(rb.velocity.x >= 0.05f)
+        StartCoroutine(FollowPlayerWhenTouchGround());
+    }
+
+    public IEnumerator FollowPlayerWhenTouchGround()
+    {
+        while (!IsGrounded())
         {
             yield return null;
         }
+        followPlayer = true;
         cancelMovement = false;
         rb.sharedMaterial.friction = 0;
         rb.sharedMaterial = rb.sharedMaterial;
@@ -112,7 +135,7 @@ public class WalkingEnemy : Enemy
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == player)
+        if (collision.gameObject == player && !playerController.playerInvulnerable)
         {
             hasCollidedWithPlayer = true;
             knockbackDirection = player.transform.position.x - gameObject.transform.position.x;
@@ -157,5 +180,12 @@ public class WalkingEnemy : Enemy
         {
             hasCollidedWithPlayer = false;
         }
-    }  
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawCube(transform.position + Vector3.up * yOffset, boxSize);
+    }
 }
+ 

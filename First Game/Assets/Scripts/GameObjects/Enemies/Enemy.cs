@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
    
     protected int direction = 1;
     protected LayerMask groundLayer;
-    protected bool cancelMovement;
+    public bool cancelMovement;
 
     // Functionality
     protected float knockbackDirection;

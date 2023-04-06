@@ -214,6 +214,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   stone: {fileID: 4651232107620855956, guid: 1961dc49b4562f641afad16cc0cf5910, type: 3}
   throwStrength: 8
+  throwRotationStrength: 100
 --- !u!114 &1998930080
 MonoBehaviour:
   m_ObjectHideFlags: 0

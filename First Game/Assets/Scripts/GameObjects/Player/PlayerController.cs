@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 
     // Functionality
     bool hasStoppedJumping;
-    bool playerInvulnerable;
+    public bool playerInvulnerable;
     [HideInInspector] public bool hasJumped;
     [HideInInspector] public bool cancelCoyoteTime;
     [HideInInspector] public bool cancelMovement;
@@ -138,6 +138,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        print(playerInvulnerable);
         timeOnAir += Time.deltaTime;
 
         if (inputBuffer == null)
@@ -207,8 +208,8 @@ public class PlayerController : MonoBehaviour
     {
         if (!playerInvulnerable)
         {
-        //Temporal variables
-
+            //Temporal variables
+            print("helli");
         cancelMovement = true;
         playerInvulnerable = true;
 
@@ -233,6 +234,7 @@ public class PlayerController : MonoBehaviour
         {
             if ((Input.GetAxisRaw("Horizontal") != 0 || rb.velocity.x == 0) && !playerLife.PlayerIsDead)
             {
+                print("2euahfai");
                 cancelMovement = false;
                 rb.sharedMaterial.friction = 0;
                 rb.sharedMaterial = rb.sharedMaterial;
