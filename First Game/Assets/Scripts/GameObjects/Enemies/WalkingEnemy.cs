@@ -32,8 +32,7 @@ public class WalkingEnemy : Enemy
 
         if (hasCollidedWithPlayer)
         {
-            print("daddy");
-            StartCoroutine(playerController.KnockBackPlayer(knockbackDirection, knockbackStrength));
+            playerController.KnockBackPlayerCaller(knockbackDirection, knockbackStrength);
         }
     }
 
@@ -135,7 +134,7 @@ public class WalkingEnemy : Enemy
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == player && !playerController.playerInvulnerable)
+        if (collision.gameObject == player)
         {
             hasCollidedWithPlayer = true;
             knockbackDirection = player.transform.position.x - gameObject.transform.position.x;

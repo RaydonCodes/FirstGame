@@ -202,14 +202,19 @@ public class PlayerController : MonoBehaviour
             transform.position += new Vector3(increment, 0, 0);
         }
     }
-
-
-    public IEnumerator KnockBackPlayer(float direction, float knockbackStrength)
+    
+    // The coroutine must be called from player because if u call it from the enemy and kill it while coroutine is running, the coroutine wont finish running
+    public void KnockBackPlayerCaller(float direction, float knockbackStrength)
     {
         if (!playerInvulnerable)
         {
-            //Temporal variables
-            print("helli");
+            StartCoroutine(KnockBackPlayer(direction, knockbackStrength));
+        }
+    }
+
+    public IEnumerator KnockBackPlayer(float direction, float knockbackStrength)
+    {
+        //Temporal variables
         cancelMovement = true;
         playerInvulnerable = true;
 
@@ -217,14 +222,12 @@ public class PlayerController : MonoBehaviour
         rb.sharedMaterial = rb.sharedMaterial;
         rb.velocity = Vector2.zero;
         rb.AddForce(new Vector2(knockbackStrength * direction, knockbackStrength / 1.5f) * 2, ForceMode2D.Impulse);
-
+       
         yield return new WaitForSeconds(.3f);
         StartCoroutine(TurnOnPlayerController());
-        
+       
         yield return new WaitForSeconds(1f);
         playerInvulnerable = false;
-
-        }
     }
 
     IEnumerator TurnOnPlayerController()
@@ -234,7 +237,6 @@ public class PlayerController : MonoBehaviour
         {
             if ((Input.GetAxisRaw("Horizontal") != 0 || rb.velocity.x == 0) && !playerLife.PlayerIsDead)
             {
-                print("2euahfai");
                 cancelMovement = false;
                 rb.sharedMaterial.friction = 0;
                 rb.sharedMaterial = rb.sharedMaterial;
