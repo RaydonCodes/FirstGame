@@ -11,6 +11,7 @@ public class Spawner : MonoBehaviour
     public int amountOfSpawns;
     public float spawnForce;
 
+    int spawns;
     float timer;
     float timeToSpawn;
     // Start is called before the first frame update
@@ -22,14 +23,12 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime; 
-        if (timer > timeToSpawn)
+        timer += Time.deltaTime;
+        if (timer > timeToSpawn && amountOfSpawns > spawns)
         {
             timer = 0;
-            for(int i = 1; i <= amountOfSpawns; i++)
-            {
-                SpawnEnemy();
-            } 
+            spawns += 1;
+            SpawnEnemy();
         }
         
     }

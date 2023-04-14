@@ -47,7 +47,7 @@ public class PlayerCombat : MonoBehaviour
 
         GameObject throwableWeapon = Instantiate(stone, transform.position + Vector3.up * 2, Quaternion.identity);
         Rigidbody2D throwableWeaponRb = throwableWeapon.GetComponent<Rigidbody2D>();
-        throwableWeaponRb.AddForce(mouseDirection * throwStrength + Vector2.up * 2, ForceMode2D.Impulse);
+        throwableWeaponRb.AddForce(mouseDirection * throwStrength + Vector2.up * .5f, ForceMode2D.Impulse);
         throwableWeaponRb.AddTorque(rotateDir * throwRotationStrength);
     }
 }
