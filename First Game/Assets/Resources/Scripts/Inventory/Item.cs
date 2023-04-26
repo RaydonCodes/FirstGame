@@ -25,7 +25,13 @@ public class Item
         this.itemType = itemType;
         this.title = title;
         this.description = description;
-        this.icon = Resources.Load<Sprite>("Sprites/Items/" + title);
+        if (itemType == ItemType.Food){
+            this.icon = Resources.Load<Sprite>("Sprites/Items/Food/" + title);
+        }
+        else
+        {
+            this.icon = Resources.Load<Sprite>("Sprites/Items/" + title);
+        }
         this.stats = stats;
     }
 

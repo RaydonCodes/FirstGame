@@ -33,7 +33,17 @@ public class ItemDataBase : MonoBehaviour
                 {
                   {"Damage", 15},
                   {"Range", 10}
+                }),
+                new Item(1,
+                Item.ItemType.Food,
+                "Burger",
+                "Simon's favourite",
+                new Dictionary<string, int>
+                {
+                  {"Health Regen", 25},
+                  {"Fat", 10}
                 })
             };
+
     }
 }
