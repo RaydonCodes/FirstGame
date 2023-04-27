@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemSlot : MonoBehaviour, IPointerClickHandler
+public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
 
     public UIItem childUIItem;
@@ -19,14 +19,12 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     {
         childUIItem.OnPointerClickEvent();
     }
-
-    private void OnMouseOver()
+    public void OnPointerEnter(PointerEventData eventData)
     {
         image.color = Color.grey;
-        print("s");
     }
-
-    private void OnMouseExit()
+    
+    public void OnPointerExit(PointerEventData eventData)
     {
         image.color = Color.white;
     }

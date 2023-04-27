@@ -9,12 +9,10 @@ public class UIItem : MonoBehaviour
     public Item item;
     private Image spriteImage;
     public UIItem selectedItem;
-    private GameObject parent;
 
     private void Awake()
     {
         spriteImage = GetComponent<Image>();
-        parent = transform.parent.gameObject;
         UpdateItem(null);
         selectedItem = GameObject.Find("SelectedItem").GetComponent<UIItem>();
     }
@@ -23,8 +21,9 @@ public class UIItem : MonoBehaviour
         this.item = item;
         if(this.item != null)
         {
+            print(item.title);
             spriteImage.color = Color.white;
-            spriteImage.sprite = this.item.icon;
+            spriteImage.sprite = item.icon;
         }
         else
         {
@@ -34,7 +33,6 @@ public class UIItem : MonoBehaviour
 
     public void OnPointerClickEvent()
     {
-        print("dad");
         if (item != null)
         {
             if (selectedItem.item != null)
@@ -47,6 +45,7 @@ public class UIItem : MonoBehaviour
             {
                 selectedItem.UpdateItem(item);
                 UpdateItem(null);
+                
             }
         }
         else if (selectedItem.item != null)

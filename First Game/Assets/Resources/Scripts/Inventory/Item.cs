@@ -40,7 +40,14 @@ public class Item
         this.id = item.id;
         this.title = item.title;
         this.description = item.description;
-        this.icon = Resources.Load<Sprite>("Sprites/Items/" + item.title);
+        if (item.itemType == ItemType.Food)
+        {
+            this.icon = Resources.Load<Sprite>("Sprites/Items/Food/" + item.title);
+        }
+        else
+        {
+            this.icon = Resources.Load<Sprite>("Sprites/Items/" + item.title);
+        }
         this.stats = item.stats; 
     }
 
