@@ -138,7 +138,6 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        print(playerInvulnerable);
         timeOnAir += Time.deltaTime;
 
         if (inputBuffer == null)

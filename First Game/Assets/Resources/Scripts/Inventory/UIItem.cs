@@ -21,7 +21,6 @@ public class UIItem : MonoBehaviour
         this.item = item;
         if(this.item != null)
         {
-            print(item.title);
             spriteImage.color = Color.white;
             spriteImage.sprite = item.icon;
         }

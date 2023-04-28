@@ -16,12 +16,19 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeSelf);
+        }
+    }
+
     public void GiveItem(int id)
     {
         Item itemToAdd = itemDataBase.GetItem(id);
         characterItems.Add(itemToAdd);
         inventoryUI.AddNewItem(itemToAdd);
-        print("Added item: " + itemToAdd.title);
     }
 
     public void GiveItem(string itemName)
@@ -29,7 +36,6 @@ public class Inventory : MonoBehaviour
         Item itemToAdd = itemDataBase.GetItem(itemName);
         characterItems.Add(itemToAdd);
         inventoryUI.AddNewItem(itemToAdd);
-        print("Added item: " + itemToAdd.title);
     }
 
 
@@ -45,7 +51,6 @@ public class Inventory : MonoBehaviour
         {
             characterItems.Remove(itemToRemove);
             inventoryUI.RemoveItem(itemToRemove);
-            print(itemToRemove.title + " was removed");
         }
     }
 
