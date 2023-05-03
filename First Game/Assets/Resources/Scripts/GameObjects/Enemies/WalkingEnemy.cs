@@ -104,6 +104,7 @@ public class WalkingEnemy : Enemy
             Destroy(gameObject);
         }
     }
+    
 
 
 

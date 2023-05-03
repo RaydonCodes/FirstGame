@@ -55,7 +55,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             disableOnce = true;
             tooltipTimer = 0;
             toolTip.gameObject.SetActive(false);
-            print("niggator");
         }
 
     }

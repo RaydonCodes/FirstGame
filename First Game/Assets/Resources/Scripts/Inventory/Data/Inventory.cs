@@ -9,7 +9,8 @@ public class Inventory : MonoBehaviour
     public UIInventory inventoryUI;
 
     private void Start()
-    {
+    {      
+        inventoryUI.CreateSlots();
       for (int i = 0; i < 10; i++)
         {
             GiveItem(1);
@@ -21,6 +22,10 @@ public class Inventory : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeSelf);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GiveItem(0);
         }
     }
 

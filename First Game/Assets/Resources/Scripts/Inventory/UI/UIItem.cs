@@ -8,14 +8,15 @@ public class UIItem : MonoBehaviour
 {
     public Item item;
     private Image spriteImage;
+    public UIInventory uIInventory;
     public UIItem selectedItem;
+    public int index;
 
     private void Awake()
     {
         spriteImage = GetComponent<Image>();
-        UpdateItem(null);
-        selectedItem = GameObject.Find("SelectedItem").GetComponent<UIItem>();
     }
+
     public void UpdateItem(Item item)
     {
         this.item = item;
@@ -28,10 +29,16 @@ public class UIItem : MonoBehaviour
         {
             spriteImage.color = Color.clear;
         }
+        if (index < uIInventory.hotbar.hotbarSlotAmount)
+        {
+            print("toad");
+            uIInventory.hotbar.UpdateHotbarSlot(index, item);
+        }
     }
 
     public void OnPointerClickEvent()
     {
+        print(index);
         if (item != null)
         {
             if (selectedItem.item != null)
