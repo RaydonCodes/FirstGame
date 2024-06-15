@@ -112,7 +112,7 @@ MonoBehaviour:
   - {x: 0.12191534, y: 0.00767231, z: 0}
   m_ShapePathHash: 921959547
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1338
+  m_InstanceId: -1320
 --- !u!1 &168550926691940214
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,6 +262,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 168550926691940213}
+  openingTime: 1
+  minOpenTimePerItem: 0.1
+  randomiseItems: 1
+  itemAmount: 10
   itemPrefab:
   - {fileID: 4172951919126490510, guid: e42e55a301ec5f5418fccfea0ea189bc, type: 3}
   - {fileID: 4172951919126490510, guid: 7b4b43d2d317d6641822464c4b0d5fe3, type: 3}
@@ -269,7 +273,6 @@ MonoBehaviour:
   - {fileID: 4172951919126490510, guid: 634fbb3c92df36d4baa6f0a5a9a40c2e, type: 3}
   hasBeenOpened: 0
   popOutPoint: {fileID: 547609783}
-  itemAmount: 70
 --- !u!1 &168550927540285195
 GameObject:
   m_ObjectHideFlags: 0

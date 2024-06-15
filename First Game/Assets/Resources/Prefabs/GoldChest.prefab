@@ -62,7 +62,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.47234145, z: 0}
   m_ShapePathHash: -1352624147
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1412
+  m_InstanceId: -1394
 --- !u!1 &1551383289402348426
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.47234145, z: 0}
   m_ShapePathHash: -1352624147
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1406
+  m_InstanceId: -1388
 --- !u!1 &1551383289972705578
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,6 +306,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1551383289972705580}
+  openingTime: 1
+  minOpenTimePerItem: 0.1
+  randomiseItems: 1
+  itemAmount: 10
   itemPrefab:
   - {fileID: 4172951919126490510, guid: e42e55a301ec5f5418fccfea0ea189bc, type: 3}
   - {fileID: 4172951919126490510, guid: 7b4b43d2d317d6641822464c4b0d5fe3, type: 3}
@@ -313,4 +317,3 @@ MonoBehaviour:
   - {fileID: 4172951919126490510, guid: 9e234bdc8e0f0c74d80888011cebe996, type: 3}
   hasBeenOpened: 0
   popOutPoint: {fileID: 1551383289402348426}
-  itemAmount: 8
