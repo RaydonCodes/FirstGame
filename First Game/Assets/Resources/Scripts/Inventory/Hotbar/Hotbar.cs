@@ -19,6 +19,7 @@ public class Hotbar : MonoBehaviour
             instance.transform.SetParent(gameObject.transform);
             instance.transform.localScale = Vector3.one;
             instance.GetComponentInChildren<TextMeshProUGUI>().text = (i + 1).ToString();
+            instance.gameObject.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = Vector3.one * 43f;
 
         }
     }

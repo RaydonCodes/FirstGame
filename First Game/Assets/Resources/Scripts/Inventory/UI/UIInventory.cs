@@ -27,6 +27,7 @@ public class UIInventory : MonoBehaviour
                 instance.transform.SetParent(slotPanel, false);
             }
             instance.gameObject.AddComponent<ItemSlot>();
+            instance.gameObject.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = Vector3.one * 90f;
             UIItem uIItem = instance.transform.GetComponentInChildren<UIItem>();
             uIItem.index = i;
             uIItem.uIInventory = gameObject.GetComponent<UIInventory>();
