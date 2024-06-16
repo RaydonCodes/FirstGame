@@ -2,20 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-
+using UnityEngine.Rendering;
 public class StreetLight : MonoBehaviour
 {
-    GameObject GlobalLightGameObject;
-    Light2D GlobalLight;
+    Volume backgroundLightGameObject;
+    Light2D BackgroundLight;
     bool TurnedOn = true; // If this isn't true by default then the lamps will still be on even if the Light Intensity > 1 
     void Start()
     {
-        GlobalLightGameObject = GameObject.FindWithTag("Global Light");
-        GlobalLight = GlobalLightGameObject.GetComponent<Light2D>();
+        backgroundLightGameObject = GameObject.Find("Global Volume").GetComponent<Volume>();
     }
     void Update()
     {
-        if((GlobalLight.intensity > 0.35f) && (TurnedOn == true))
+        if((backgroundLightGameObject.weight < 0.70f) && (TurnedOn == true))
         {
             TurnedOn = false;
             foreach(Transform child in transform)
@@ -23,7 +22,7 @@ public class StreetLight : MonoBehaviour
                 child.gameObject.SetActive(false);
             }
         }
-        if((GlobalLight.intensity < 0.35f) && (TurnedOn == false))
+        if((backgroundLightGameObject.weight > 0.70f) && (TurnedOn == false))
         {
             TurnedOn = true;
             foreach (Transform child in transform)
